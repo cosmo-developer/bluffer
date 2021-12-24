@@ -1,3 +1,6 @@
-void main(string[] args)${
-	
+void main(string[] args){
+arg=39   ;
+somepeople= ""
+,,,,,,,
+
 }

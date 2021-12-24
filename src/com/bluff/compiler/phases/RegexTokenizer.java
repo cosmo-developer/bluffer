@@ -103,17 +103,17 @@ public class RegexTokenizer {
     private static final String TOKEN_PATTERN_SOURCE
             = ""//Multi line comment not supported
             + "(?<slcomment>#.*)"
-            + "|,|>>>|>>|>=|>|<<<|<<|<=|<|[.]"
-            + "|\\+=|\\++|\\+|-=|--|/=|/|\\*=|\\*|%=|%|"
-            + "==|!=|=|!|&&|&|\\|\\||\\||"
-            + ":|;|\\(|\\)|\\[|\\]|\\{|\\}|\\^|"
-            + "(?<charliteral>'.*')|(?<stringliteral>\".*\")|"
+            + "|>>>|>>|>=|<<<|<<|<="
+            + "|\\+=|\\++|-=|--|/=|/|\\*=|%=|"
+            + "==|!=|&&|\\|\\||"
+            + ""
+            + "(?<charliteral>'.*'?)|(?<stringliteral>\".*\"?)|"
             + buildKwdGroup() + "|"
             + "(?<identifier>[_a-zA-Z][_a-zA-Z0-9]*)|"
             + "(?<newline>\\n)|(?<whitespace>\\s)|(?<scientific>\\d*(.|)[0-9]+e(\\+|\\-|)\\d*)|"
             + "(?<double>\\d*[.][0-9]+)|"
             + "(?<integer>[0-9]+)|"
-            + "(?<garbage>[\\$])";
+            + "(?<other>.)";
 
     private void performLexicalAnalysis(byte[] src) {
         String source = new String(src);
@@ -151,11 +151,32 @@ public class RegexTokenizer {
                 tokens.add(new Token(matcher.group(), TT.INTEGER_LITERAL, sourceFile.getName(), line, col));
                 col += matcher.group().length();
             } else if (matcher.group("charliteral") != null) {
-                tokens.add(new Token(matcher.group(), TT.CHAR_LITERAL, sourceFile.getName(), line, col));
-                col += matcher.group().length();
+                int test_size = matcher.group().length();
+                switch (test_size) {
+                    case 3:
+                    case 4:
+                        tokens.add(new Token(matcher.group(), TT.CHAR_LITERAL, sourceFile.getName(), line, col));
+                        col += matcher.group().length();
+                        break;
+                    case 2:
+                        ErrorHandler.EmptyCharLiteral(Lexer.getBackTraceOneLine(source.getBytes(), matcher.start()), line, col);
+                        col += test_size;
+                        break;
+                    default:
+                        ErrorHandler.UnclosedCharLiteral(source.getBytes(), Lexer.getBackTraceOneLine(source.getBytes(), matcher.start()), matcher.start(), line, col);
+                        col += test_size;
+                        break;
+                }
             } else if (matcher.group("stringliteral") != null) {
-                tokens.add(new Token(matcher.group(), TT.STRING_LITERAL, sourceFile.getName(), line, col));
-                col += matcher.group().length();
+                int test_size = matcher.group().length();
+                if (test_size >= 2 && matcher.group().charAt(test_size-1)=='"') {
+                    tokens.add(new Token(matcher.group(), TT.STRING_LITERAL, sourceFile.getName(), line, col));
+                    col += matcher.group().length();
+                }else{
+                    ErrorHandler.UnclosedStringLiteral(Lexer.getBackTraceOneLine(source.getBytes(), matcher.start()), line, col+test_size-1);
+                    col+=test_size;
+                }
+
             }/*else if(matcher.group("multicomment")!=null){
                 line+=matcher.group().split("\n").length;
                 if (matcher.group().charAt(matcher.group().length()-1)=='\n'){
@@ -164,12 +185,22 @@ public class RegexTokenizer {
             }*/ else if (matcher.group("slcomment") != null) {
                 col = 1;
                 line += 1;
-            }else if (matcher.group("garbage") != null) {
-                ErrorHandler.InvalidCharacter(Lexer.getBackTraceOneLine(source.getBytes(), matcher.start()), line, col-1);
-                col+=matcher.group().length();
+            } else if (matcher.group("other") != null) {
+                TT type = RegexTokenizer.getNonTerminalsType(matcher.group());
+                if (type != TT.EOF && type != TT.NEWLINE && type != TT.SPACEBAR) {
+                    tokens.add(new Token(matcher.group(), RegexTokenizer.getNonTerminalsType(matcher.group()), sourceFile.getName(), line, col));
+                    col += matcher.group().length();
+                } else if (type == TT.NEWLINE) {
+                    line++;
+                    col = 1;
+                } else if (type == TT.SPACEBAR) {
+                    col++;
+                } else {
+                    ErrorHandler.InvalidCharacter(Lexer.getBackTraceOneLine(source.getBytes(), matcher.start()), line, col - 1);
+                    col += matcher.group().length();
+                }
             } else {
-                tokens.add(new Token(matcher.group(), RegexTokenizer.getNonTerminalsType(matcher.group()), sourceFile.getName(), line, col));
-                col += matcher.group().length();
+                System.err.println("I don't know why here!");
             }
         }
 
@@ -255,6 +286,10 @@ public class RegexTokenizer {
                 return TT.MOD_EQUAL;
             case ".":
                 return TT.DOT;
+            case " ":
+                return TT.SPACEBAR;
+            case "\n":
+                return TT.NEWLINE;
             default:
                 return TT.EOF;
         }

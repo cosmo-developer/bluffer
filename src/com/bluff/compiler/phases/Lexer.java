@@ -196,7 +196,7 @@ public class Lexer {
         STRING_LITERAL,
         CHAR_LITERAL,
         DOUBLE_LITERAL,
-        EOF, INTEGER_LITERAL, PRINT_KWD, NEW_KWD,
+        EOF, INTEGER_LITERAL, PRINT_KWD, NEW_KWD, NEWLINE,SPACEBAR
     }
 
     public static class Token {

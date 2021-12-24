@@ -31,6 +31,7 @@ public class ErrorHandler {
             System.err.print(" ");
         }
         System.err.println("^");
+        errorCount++;
     }
     public static void InvalidEscapeCharacter(byte[] src,String msg,int currpos,int line,int col){
         System.err.printf("Invalid Escape Character (line:%d,col:%d)\n%s\n",line,col,msg);
@@ -52,4 +53,22 @@ public class ErrorHandler {
         System.err.println("^");
         errorCount++;
     }
+    
+    public static void EmptyCharLiteral(String msg,int line,int col){
+        System.err.printf("Empty Char Literal (line:%d,col:%d)\n%s\n",line,col,msg);
+        for (int i=1;i<=col;i++){
+            System.err.print(" ");
+        }
+        System.err.println("^");
+        errorCount++;
+    }
+    public static void UnclosedStringLiteral(String msg,int line,int col){
+        System.err.printf("Unclosed String Literal (line:%d,col:%d)\n%s\n",line,col,msg);
+        for (int i=1;i<=col;i++){
+            System.err.print(" ");
+        }
+        System.err.println("^");
+        errorCount++;
+    }
+    
 }
