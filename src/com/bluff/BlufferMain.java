@@ -28,6 +28,7 @@ public class BlufferMain {
         }else{
             throw new Exception("Compilation terminated![Error:"+ErrorHandler.errorCount+"]");
         }
+        
     }
 
 }

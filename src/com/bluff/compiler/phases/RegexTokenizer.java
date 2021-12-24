@@ -107,14 +107,38 @@ public class RegexTokenizer {
             + "|\\+=|\\++|-=|--|/=|/|\\*=|%=|"
             + "==|!=|&&|\\|\\||"
             + ""
-            + "(?<charliteral>'.*'?)|(?<stringliteral>\".*\"?)|"
+            + "(?<charliteral>'.*')|"
+            + "(?<stringliteral>\".*\")|"
             + buildKwdGroup() + "|"
             + "(?<identifier>[_a-zA-Z][_a-zA-Z0-9]*)|"
             + "(?<newline>\\n)|(?<whitespace>\\s)|(?<scientific>\\d*(.|)[0-9]+e(\\+|\\-|)\\d*)|"
             + "(?<double>\\d*[.][0-9]+)|"
             + "(?<integer>[0-9]+)|"
             + "(?<other>.)";
-
+    static Pattern escapeMatching=Pattern.compile("\\[^nbrf'\"]");
+    private String performEscaping(String anyliteral,byte[] source,int curpos,int line,int col){
+        if (anyliteral.length() >=3){
+            
+        }
+        String result= anyliteral
+                .replace("\\n", "\n")
+                .replace("\\b", "\b")
+                .replace("\\r", "\r")
+                .replace("\\f", "\f")
+                .replace("\\\"", "\"")
+                .replace("\\\\", "\\")
+                ;
+        if (anyliteral.charAt(0)=='\''){
+            result=result.replace("\\'", "'");
+        }
+        Matcher matcher = escapeMatching.matcher(anyliteral);
+        while (matcher.find()){
+            ErrorHandler.InvalidEscapeCharacter(null, Lexer.getBackTraceOneLine(source, curpos), curpos, line, col);
+        }
+        if (ErrorHandler.errorCount!=0)
+            return null;
+        return result;
+    }
     private void performLexicalAnalysis(byte[] src) {
         String source = new String(src);
         try {
@@ -155,7 +179,9 @@ public class RegexTokenizer {
                 switch (test_size) {
                     case 3:
                     case 4:
-                        tokens.add(new Token(matcher.group(), TT.CHAR_LITERAL, sourceFile.getName(), line, col));
+                        tokens.add(new Token(
+                                this.performEscaping(matcher.group(), source.getBytes(), matcher.start(), line, col)
+                                , TT.CHAR_LITERAL, sourceFile.getName(), line, col));
                         col += matcher.group().length();
                         break;
                     case 2:
@@ -170,7 +196,7 @@ public class RegexTokenizer {
             } else if (matcher.group("stringliteral") != null) {
                 int test_size = matcher.group().length();
                 if (test_size >= 2 && matcher.group().charAt(test_size-1)=='"') {
-                    tokens.add(new Token(matcher.group(), TT.STRING_LITERAL, sourceFile.getName(), line, col));
+                    tokens.add(new Token(this.performEscaping(matcher.group(), source.getBytes(), matcher.start(), line, col), TT.STRING_LITERAL, sourceFile.getName(), line, col));
                     col += matcher.group().length();
                 }else{
                     ErrorHandler.UnclosedStringLiteral(Lexer.getBackTraceOneLine(source.getBytes(), matcher.start()), line, col+test_size-1);

@@ -39,6 +39,7 @@ public class ErrorHandler {
             System.err.print(" ");
         }
         System.err.println("^");
+        errorCount++;
     }
     
     
