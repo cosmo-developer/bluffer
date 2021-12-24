@@ -273,4 +273,11 @@ public final class ASTNodes {
         }
     }
     
+    public class MathExpNode extends BaseNode{
+        @Override
+        public Object accept(ByteCodeGenerator generator) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+    }
+    
 }
