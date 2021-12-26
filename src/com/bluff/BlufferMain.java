@@ -1,7 +1,8 @@
 package com.bluff;
 
 import com.bluff.compiler.ErrorHandler;
-import com.bluff.compiler.phases.Lexer;
+import com.bluff.compiler.phases.Helper;
+import com.bluff.compiler.phases.Parser;
 import com.bluff.compiler.phases.RegexTokenizer;
 import com.bluff.util.Pair;
 import java.io.FileNotFoundException;
@@ -20,11 +21,10 @@ public class BlufferMain {
      */
     public static void main(String[] args) throws FileNotFoundException, IOException, Exception {
         RegexTokenizer lexer=new RegexTokenizer();
-        Pair<Byte[], ArrayList<Lexer.Token>> pairs = lexer.genTokens();
+        Pair<String, ArrayList<Helper.Token>> pairs = lexer.genTokens();
         if (ErrorHandler.errorCount==0){
-            pairs.getValue().forEach((p) -> {
-                System.out.println(p);
-            });
+            Parser parser=new Parser(pairs.getValue(),pairs.getKey());
+            parser.parse();
         }else{
             throw new Exception("Compilation terminated![Error:"+ErrorHandler.errorCount+"]");
         }

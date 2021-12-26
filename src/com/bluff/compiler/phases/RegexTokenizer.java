@@ -6,8 +6,8 @@
 package com.bluff.compiler.phases;
 
 import com.bluff.compiler.ErrorHandler;
-import com.bluff.compiler.phases.Lexer.TT;
-import com.bluff.compiler.phases.Lexer.Token;
+import com.bluff.compiler.phases.Helper.TT;
+import com.bluff.compiler.phases.Helper.Token;
 import com.bluff.util.Pair;
 import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
@@ -70,7 +70,7 @@ public class RegexTokenizer {
         sourceLines = new ArrayList<>();
     }
 
-    public Pair<Byte[], ArrayList<Lexer.Token>> genTokens() {
+    public Pair<String, ArrayList<Helper.Token>> genTokens() {
         tokens = new ArrayList<>();
         try {
             try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(sourceFile)) //Creating a buffer reader
@@ -80,12 +80,12 @@ public class RegexTokenizer {
                 bis.read(src);//reading total content of file
                 performLexicalAnalysis(src); //Given to this function to generate tokens from source
                 bis.close();//Closing Buffer reader
-                return new Pair(src, tokens);
+                return new Pair(new String(src), tokens);
             } //Get The Size of File in bytes
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(Lexer.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Helper.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(Lexer.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Helper.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
@@ -133,7 +133,7 @@ public class RegexTokenizer {
         }
         Matcher matcher = escapeMatching.matcher(anyliteral);
         while (matcher.find()){
-            ErrorHandler.InvalidEscapeCharacter(null, Lexer.getBackTraceOneLine(source, curpos), curpos, line, col);
+            ErrorHandler.InvalidEscapeCharacter(null, Helper.getBackTraceOneLine(source, curpos), curpos, line, col);
         }
         if (ErrorHandler.errorCount!=0)
             return null;
@@ -155,10 +155,10 @@ public class RegexTokenizer {
         int col = 1;
         while (matcher.find()) {
             if (matcher.group("identifier") != null) {
-                tokens.add(new Token(matcher.group(), TT.IDENTIFIER, sourceFile.getName(), line, col));
+                tokens.add(new Token(matcher.group(), TT.IDENTIFIER, sourceFile.getName(), line, col,matcher.start()));
                 col += matcher.group().length();
             } else if (matcher.group("keywords") != null) {
-                tokens.add(new Token(matcher.group(), SUPPORTED_KEYWORDS.get(matcher.group()), sourceFile.getName(), line, col));
+                tokens.add(new Token(matcher.group(), SUPPORTED_KEYWORDS.get(matcher.group()), sourceFile.getName(), line, col,matcher.start()));
                 col += matcher.group().length();
             } else if (matcher.group("newline") != null) {
                 line++;
@@ -166,13 +166,13 @@ public class RegexTokenizer {
             } else if (matcher.group("whitespace") != null) {
                 col++;
             } else if (matcher.group("scientific") != null) {
-                tokens.add(new Token(matcher.group(), TT.DOUBLE_LITERAL, sourceFile.getName(), line, col));
+                tokens.add(new Token(matcher.group(), TT.DOUBLE_LITERAL, sourceFile.getName(), line, col,matcher.start()));
                 col += matcher.group().length();
             } else if (matcher.group("double") != null) {
-                tokens.add(new Token(matcher.group(), TT.DOUBLE_LITERAL, sourceFile.getName(), line, col));
+                tokens.add(new Token(matcher.group(), TT.DOUBLE_LITERAL, sourceFile.getName(), line, col,matcher.start()));
                 col += matcher.group().length();
             } else if (matcher.group("integer") != null) {
-                tokens.add(new Token(matcher.group(), TT.INTEGER_LITERAL, sourceFile.getName(), line, col));
+                tokens.add(new Token(matcher.group(), TT.INTEGER_LITERAL, sourceFile.getName(), line, col,matcher.start()));
                 col += matcher.group().length();
             } else if (matcher.group("charliteral") != null) {
                 int test_size = matcher.group().length();
@@ -181,25 +181,25 @@ public class RegexTokenizer {
                     case 4:
                         tokens.add(new Token(
                                 this.performEscaping(matcher.group(), source.getBytes(), matcher.start(), line, col)
-                                , TT.CHAR_LITERAL, sourceFile.getName(), line, col));
+                                , TT.CHAR_LITERAL, sourceFile.getName(), line, col,matcher.start()));
                         col += matcher.group().length();
                         break;
                     case 2:
-                        ErrorHandler.EmptyCharLiteral(Lexer.getBackTraceOneLine(source.getBytes(), matcher.start()), line, col);
+                        ErrorHandler.EmptyCharLiteral(Helper.getBackTraceOneLine(source.getBytes(), matcher.start()), line, col);
                         col += test_size;
                         break;
                     default:
-                        ErrorHandler.UnclosedCharLiteral(source.getBytes(), Lexer.getBackTraceOneLine(source.getBytes(), matcher.start()), matcher.start(), line, col);
+                        ErrorHandler.UnclosedCharLiteral(source.getBytes(), Helper.getBackTraceOneLine(source.getBytes(), matcher.start()), matcher.start(), line, col);
                         col += test_size;
                         break;
                 }
             } else if (matcher.group("stringliteral") != null) {
                 int test_size = matcher.group().length();
                 if (test_size >= 2 && matcher.group().charAt(test_size-1)=='"') {
-                    tokens.add(new Token(this.performEscaping(matcher.group(), source.getBytes(), matcher.start(), line, col), TT.STRING_LITERAL, sourceFile.getName(), line, col));
+                    tokens.add(new Token(this.performEscaping(matcher.group(), source.getBytes(), matcher.start(), line, col), TT.STRING_LITERAL, sourceFile.getName(), line, col,matcher.start()));
                     col += matcher.group().length();
                 }else{
-                    ErrorHandler.UnclosedStringLiteral(Lexer.getBackTraceOneLine(source.getBytes(), matcher.start()), line, col+test_size-1);
+                    ErrorHandler.UnclosedStringLiteral(Helper.getBackTraceOneLine(source.getBytes(), matcher.start()), line, col+test_size-1);
                     col+=test_size;
                 }
 
@@ -214,7 +214,8 @@ public class RegexTokenizer {
             } else if (matcher.group("other") != null) {
                 TT type = RegexTokenizer.getNonTerminalsType(matcher.group());
                 if (type != TT.EOF && type != TT.NEWLINE && type != TT.SPACEBAR) {
-                    tokens.add(new Token(matcher.group(), RegexTokenizer.getNonTerminalsType(matcher.group()), sourceFile.getName(), line, col));
+                    tokens.add(new Token(matcher.group(), RegexTokenizer.getNonTerminalsType(matcher.group()), sourceFile.getName(), line, col,
+                    matcher.start()));
                     col += matcher.group().length();
                 } else if (type == TT.NEWLINE) {
                     line++;
@@ -222,7 +223,7 @@ public class RegexTokenizer {
                 } else if (type == TT.SPACEBAR) {
                     col++;
                 } else {
-                    ErrorHandler.InvalidCharacter(Lexer.getBackTraceOneLine(source.getBytes(), matcher.start()), line, col - 1);
+                    ErrorHandler.InvalidCharacter(Helper.getBackTraceOneLine(source.getBytes(), matcher.start()), line, col - 1);
                     col += matcher.group().length();
                 }
             } else {

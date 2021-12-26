@@ -6,8 +6,8 @@
 package com.bluff.compiler.grammar;
 
 import com.bluff.compiler.phases.ByteCodeGenerator;
-import com.bluff.compiler.phases.Lexer.TT;
-import com.bluff.compiler.phases.Lexer.Token;
+import com.bluff.compiler.phases.Helper.TT;
+import com.bluff.compiler.phases.Helper.Token;
 import java.util.ArrayList;
 
 /**
@@ -274,10 +274,68 @@ public final class ASTNodes {
     }
     
     public class MathExpNode extends BaseNode{
+        public final BaseNode lexp;
+        public final TT operator;
+        public final BaseNode rexp;
+        public MathExpNode(BaseNode lexp,TT operator,BaseNode rexp){
+            this.lexp=lexp;
+            this.operator=operator;
+            this.rexp=rexp;
+        }
         @Override
         public Object accept(ByteCodeGenerator generator) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            return generator.visit(this);
         }
+    }
+    
+    public class TermNode extends BaseNode{
+        public final BaseNode lexp;
+        public final TT operator;
+        public final BaseNode rexp;
+        public TermNode(BaseNode lexp,TT operator,BaseNode rexp){
+            this.lexp=lexp;
+            this.operator=operator;
+            this.rexp=rexp;
+        }
+        @Override
+        public Object accept(ByteCodeGenerator generator) {
+            return generator.visit(this);
+        }
+    }
+    
+    public class FactorNode extends BaseNode{
+        public final BaseNode exp;
+        public FactorNode(BaseNode exp){
+            this.exp=exp;
+        }
+        @Override
+        public Object accept(ByteCodeGenerator generator) {
+            return generator.visit(this);
+        }
+    }
+    
+    public class UnaryNode extends BaseNode{
+        public final BaseNode exp;
+        public final TT operator;
+        public UnaryNode(BaseNode exp,TT operator){
+            this.exp=exp;
+            this.operator=operator;
+        }
+        @Override
+        public Object accept(ByteCodeGenerator generator) {
+            return generator.visit(this);
+        }
+    }
+    public class GlobalVarNode extends BaseNode{
+        public final Token var;
+        public GlobalVarNode(Token var){
+            this.var=var;
+        }
+        @Override
+        public Object accept(ByteCodeGenerator generator) {
+            return generator.visit(this);
+        }
+        
     }
     
 }
