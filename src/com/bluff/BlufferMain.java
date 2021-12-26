@@ -22,7 +22,8 @@ public class BlufferMain {
     public static void main(String[] args) throws FileNotFoundException, IOException, Exception {
         RegexTokenizer lexer=new RegexTokenizer();
         Pair<String, ArrayList<Helper.Token>> pairs = lexer.genTokens();
-        if (ErrorHandler.errorCount==0){
+        if (ErrorHandler.errorCount!=0){
+            pairs.getValue().forEach((val)->{System.err.println(val);});
             Parser parser=new Parser(pairs.getValue(),pairs.getKey());
             parser.parse();
         }else{

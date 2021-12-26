@@ -94,9 +94,9 @@ public class RegexTokenizer {
         String buildString = "";
         buildString = RegexTokenizer.SUPPORTED_KEYWORDS.keySet().stream().map((kwd) -> kwd + "$").reduce(buildString, String::concat);
         buildString += "!";
-        buildString = buildString.replace('$', '|');
+        buildString = buildString.replace("$", "|");
         buildString = buildString.replace("|!", "");
-        buildString = "(?<keywords>" + buildString + ")";
+        buildString = "(?<keywords>"+"[^_a-zA-Z0-9]"+"("+ buildString +")"+"[^a-zA-Z0-9]"+")";
         return buildString;
     }
 
@@ -104,9 +104,9 @@ public class RegexTokenizer {
             = ""//Multi line comment not supported
             + "(?<slcomment>#.*)"
             + "|>>>|>>|>=|<<<|<<|<="
-            + "|\\+=|\\++|-=|--|/=|/|\\*=|%=|"
-            + "==|!=|&&|\\|\\||"
-            + ""
+            + "|\\+=|\\+\\+|\\+|-=|--|-|/=|/|\\*=|%=|"
+            + "==|!=|&&|&|\\|\\||"
+            + ":|;|\\(|\\)|\\[|\\]|\\{|\\}|\\^|"
             + "(?<charliteral>'.*')|"
             + "(?<stringliteral>\".*\")|"
             + buildKwdGroup() + "|"
@@ -114,7 +114,7 @@ public class RegexTokenizer {
             + "(?<newline>\\n)|(?<whitespace>\\s)|(?<scientific>\\d*(.|)[0-9]+e(\\+|\\-|)\\d*)|"
             + "(?<double>\\d*[.][0-9]+)|"
             + "(?<integer>[0-9]+)|"
-            + "(?<other>.)";
+            + "";
     static Pattern escapeMatching=Pattern.compile("\\[^nbrf'\"]");
     private String performEscaping(String anyliteral,byte[] source,int curpos,int line,int col){
         if (anyliteral.length() >=3){
@@ -134,6 +134,7 @@ public class RegexTokenizer {
         Matcher matcher = escapeMatching.matcher(anyliteral);
         while (matcher.find()){
             ErrorHandler.InvalidEscapeCharacter(null, Helper.getBackTraceOneLine(source, curpos), curpos, line, col);
+            
         }
         if (ErrorHandler.errorCount!=0)
             return null;
@@ -211,7 +212,7 @@ public class RegexTokenizer {
             }*/ else if (matcher.group("slcomment") != null) {
                 col = 1;
                 line += 1;
-            } else if (matcher.group("other") != null) {
+            } /*else if (matcher.group("other") != null) {
                 TT type = RegexTokenizer.getNonTerminalsType(matcher.group());
                 if (type != TT.EOF && type != TT.NEWLINE && type != TT.SPACEBAR) {
                     tokens.add(new Token(matcher.group(), RegexTokenizer.getNonTerminalsType(matcher.group()), sourceFile.getName(), line, col,
@@ -226,8 +227,10 @@ public class RegexTokenizer {
                     ErrorHandler.InvalidCharacter(Helper.getBackTraceOneLine(source.getBytes(), matcher.start()), line, col - 1);
                     col += matcher.group().length();
                 }
-            } else {
-                System.err.println("I don't know why here!");
+            } */else {
+                tokens.add(new Token(matcher.group(), RegexTokenizer.getNonTerminalsType(matcher.group()), sourceFile.getName(), line, col,
+                    matcher.start()));
+                    col += matcher.group().length();
             }
         }
 
