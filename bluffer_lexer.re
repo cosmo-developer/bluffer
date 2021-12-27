@@ -1,0 +1,10 @@
+(?<emptychar>'')|
+(?<terminatedchar>'.')|
+(?<specialterminatedchar>'\\.')|
+(?<unterminatedchar>'.?)|
+(?<hexnumber>\b0[xX][0-9a-fA-F]+\b)|
+(?<integer>\b[1-9]+[0-9]*\b)|
+(?<octal>\b0[0-7]+\b)|
+(?<newline>\n)
+(?<whitespace>\w+)|
+(?<invalid>^)
