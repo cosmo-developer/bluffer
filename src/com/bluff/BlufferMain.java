@@ -1,6 +1,8 @@
 package com.bluff;
 
 import com.bluff.compiler.phases.BlufferLexer;
+import com.bluff.compiler.phases.Parser;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -16,12 +18,23 @@ public class BlufferMain {
      * @throws java.io.FileNotFoundException
      */
     public static void main(String[] args) throws FileNotFoundException, IOException, Exception {
-
-        BlufferLexer lexer = new BlufferLexer(new FileReader("test.java"));
+        FileReader reader=new FileReader("test.java");
+        File file=new File("test.java");
+        FileReader readercopy=new FileReader("test.java");
+        BlufferLexer lexer = new BlufferLexer(reader);
+        int size=(int) file.length();
+        char[] sourceBuffer=new char[size];
+        readercopy.read(sourceBuffer);
+        lexer.setFileName("test.java");
+        readercopy.close();
+        lexer.setSourceCode(new String(sourceBuffer));
         while(!lexer.yyatEOF()){
             lexer.yylex();
         }
-        System.out.println(lexer.tokens);
+        
+        Parser parser=new Parser(lexer.tokens,new String(sourceBuffer));
+        parser.parse();
+        
     }
 
 }

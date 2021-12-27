@@ -99,6 +99,11 @@ public class Helper {
         STRING_LITERAL,
         CHAR_LITERAL,
         DOUBLE_LITERAL,
+        FLOAT_LITERAL,
+        SHORT_LITERAL,
+        BYTE_LITERAL,
+        LONG_LITERAL,
+        BOOL_LITERAL,
         EOF, INTEGER_LITERAL, PRINT_KWD, NEW_KWD, NEWLINE,SPACEBAR
     }
 

@@ -53,7 +53,7 @@ HexDigit      = [0-9a-fA-F]
 OctLiteral    = 0+ {OctDigit}* {IntegerSuffix}
 OctDigit          = [0-7]
 
-IntegerSuffix = [uU]? [lL]? [uU]?
+IntegerSuffix = [lL]?
 	
 /* float literals */
 
@@ -84,7 +84,54 @@ Exponent = [eE] [+\-]? [0-9]+
 			tokens.add(new Token(yytext(),TT.IDENTIFIER,fileName,yyline+1,yycolumn,zzCurrentPos));
 		}
 	 }
+	 
+	 
+	 {DecLiteral}  {
+			try{
+				long val=Long.parseLong(yytext().replaceAll("l|L",""));
+				tokens.add(new Token(yytext(),RegexTool.getIntType(val),fileName,yyline+1,yycolumn,zzCurrentPos));
+			}catch(NumberFormatException e){
+				System.err.println("Integer overflow:"+yytext());
+			}
+	 }
+	 
+	 {OctLiteral} {
+			try{
+				long val=Long.parseLong(yytext().replaceAll("l|L",""),8);
+				tokens.add(new Token(yytext(),RegexTool.getIntType(val),fileName,yyline+1,yycolumn,zzCurrentPos));
+			}catch(NumberFormatException e){
+				System.err.println("Integer overflow:"+yytext());
+			}
+	 }
+	 
+	 
+	 {FloatLiteral} {			
+			double val=Double.parseDouble(yytext());
+			if (val>Double.MAX_VALUE){
+				System.err.println("Floating number too large:"+yytext());
+			}else{
+				tokens.add(new Token(yytext(),RegexTool.getFloatType(val),fileName,yyline+1,yycolumn,zzCurrentPos));
+			}
+	 }
+	 
+	 {HexLiteral} {
+			try{
+				long val=Long.parseLong(yytext().replaceAll("l|L|x|X",""),16);
+				tokens.add(new Token(yytext(),RegexTool.getIntType(val),fileName,yyline+1,yycolumn,zzCurrentPos));
+			}catch(NumberFormatException e){
+				System.err.println("Integer overflow:"+yytext());
+				System.out.println(e.getMessage());
+			}
+	 }
+	 
+	 
 	 [\w+]						{}
 	 \s|\n		{}
-	 [^]  {System.out.println("Invalid Char At:"+yytext());}
+	 [^]  {
+			if (RegexTokenizer.getType(yytext())!=TT.EOF){
+				tokens.add(new Token(yytext(),RegexTokenizer.getType(yytext()),fileName,yyline+1,yycolumn,zzCurrentPos));
+			}else{
+				ErrorHandler.InvalidCharacter(Helper.getBackTraceOneLine(sourceCode.getBytes(),zzCurrentPos),yyline+1,yycolumn);
+			}
+	 }
 }

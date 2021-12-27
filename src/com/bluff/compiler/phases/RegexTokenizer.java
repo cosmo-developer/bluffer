@@ -33,7 +33,6 @@ public class RegexTokenizer {
     private final File sourceFile;
     private ArrayList<Token> tokens;
     private final ArrayList<String> sourceLines;
-
     static {
         SUPPORTED_KEYWORDS = new HashMap<>();
         SUPPORTED_KEYWORDS.put("bool", TT.BOOLEAN_KWD);
@@ -228,7 +227,7 @@ public class RegexTokenizer {
                     col += matcher.group().length();
                 }
             } */else {
-                tokens.add(new Token(matcher.group(), RegexTokenizer.getNonTerminalsType(matcher.group()), sourceFile.getName(), line, col,
+                tokens.add(new Token(matcher.group(), RegexTokenizer.getType(matcher.group()), sourceFile.getName(), line, col,
                     matcher.start()));
                     col += matcher.group().length();
             }
@@ -236,7 +235,7 @@ public class RegexTokenizer {
 
     }
 
-    public static TT getNonTerminalsType(String nt) {
+    public static TT getType(String nt) {
         switch (nt) {
             case "{":
                 return TT.OPEN_CURLI_BRACKET;

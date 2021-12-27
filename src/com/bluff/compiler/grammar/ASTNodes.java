@@ -228,6 +228,9 @@ public final class ASTNodes {
             return generator.visit(this);
         }
     }
+    
+    
+    
     public class AssignNode extends BaseNode{
         public final BaseNode lexp;
         public final BaseNode rexp;
@@ -328,8 +331,10 @@ public final class ASTNodes {
     }
     public class GlobalVarNode extends BaseNode{
         public final Token var;
-        public GlobalVarNode(Token var){
+        public final int flag;//0 for final 1 for normal
+        public GlobalVarNode(Token var,int flag){
             this.var=var;
+            this.flag=flag;
         }
         @Override
         public Object accept(ByteCodeGenerator generator) {
@@ -338,4 +343,72 @@ public final class ASTNodes {
         
     }
     
+    public class ArrayVariableNode extends BaseNode{
+        public final int nDimensions;
+        public final Token var;
+        public final int flag;//0 for final 1 for normal
+        public ArrayVariableNode(int nDimensions,Token var,int flag){
+            this.nDimensions=nDimensions;
+            this.var=var;
+            this.flag=flag;
+        }
+        @Override
+        public Object accept(ByteCodeGenerator generator) {
+            return generator.visit(this);
+        }
+    }
+    
+    public class CreateNewArrayNode extends BaseNode{
+        public final int nDimensions;
+        public final ArrayList<BaseNode> sizeIntializer;
+        public final Token type;
+        public CreateNewArrayNode(int nDimensions,ArrayList<BaseNode> sizeInitializer,Token type){
+            this.nDimensions=nDimensions;
+            this.sizeIntializer=sizeInitializer;
+            this.type=type;
+        }
+        @Override
+        public Object accept(ByteCodeGenerator generator) {
+            return generator.visit(this);
+        }
+    }
+    public class DirectArrayAssignNode extends BaseNode{
+        public final int nDimensions;
+        public final ArrayList<BaseNode> valueInitializers;
+        public final Token type;
+        public DirectArrayAssignNode(int nDimensions,ArrayList<BaseNode> valueInitializers,Token type){
+            this.nDimensions=nDimensions;
+            this.valueInitializers=valueInitializers;
+            this.type=type;
+        }
+        
+        @Override
+        public Object accept(ByteCodeGenerator generator) {
+            return generator.visit(this);
+        }
+        
+    }
+    public class ArgsDefNode extends BaseNode{
+        @Override
+        public Object accept(ByteCodeGenerator generator) {
+            return generator.visit(this);
+        }
+        
+    }
+    
+    public class VarDeclNonInitializedNode extends BaseNode{
+        public final boolean isArray;
+        public final Token name;
+        public VarDeclNonInitializedNode(boolean isArray,Token name){
+            this.isArray=isArray;
+            this.name=name;
+        }
+        @Override
+        public Object accept(ByteCodeGenerator generator) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+        
+    }
+    
+   
 }
