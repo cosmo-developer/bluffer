@@ -1,4 +1,4 @@
-// Generated from Bluffer.g4 by ANTLR 4.9.3
+// Generated from e:\jdev-2021\bluffer\src\com\bluff\compiler\grammar\Bluffer.g4 by ANTLR 4.8
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class BlufferParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.9.3", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.8", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -171,14 +171,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_programBody; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterProgramBody(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitProgramBody(this);
-		}
 	}
 
 	public final ProgramBodyContext programBody() throws RecognitionException {
@@ -224,14 +216,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_programBodyDeclaration; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterProgramBodyDeclaration(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitProgramBodyDeclaration(this);
-		}
 	}
 
 	public final ProgramBodyDeclarationContext programBodyDeclaration() throws RecognitionException {
@@ -292,14 +276,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_memberDecl; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterMemberDecl(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitMemberDecl(this);
-		}
 	}
 
 	public final MemberDeclContext memberDecl() throws RecognitionException {
@@ -364,14 +340,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_memberDeclaration; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterMemberDeclaration(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitMemberDeclaration(this);
-		}
 	}
 
 	public final MemberDeclarationContext memberDeclaration() throws RecognitionException {
@@ -420,14 +388,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_methodDeclaration; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterMethodDeclaration(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitMethodDeclaration(this);
-		}
 	}
 
 	public final MethodDeclarationContext methodDeclaration() throws RecognitionException {
@@ -462,14 +422,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_fieldDeclaration; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterFieldDeclaration(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitFieldDeclaration(this);
-		}
 	}
 
 	public final FieldDeclarationContext fieldDeclaration() throws RecognitionException {
@@ -515,14 +467,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_methodDeclaratorRest; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterMethodDeclaratorRest(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitMethodDeclaratorRest(this);
-		}
 	}
 
 	public final MethodDeclaratorRestContext methodDeclaratorRest() throws RecognitionException {
@@ -593,14 +537,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_voidMethodDeclaratorRest; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterVoidMethodDeclaratorRest(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitVoidMethodDeclaratorRest(this);
-		}
 	}
 
 	public final VoidMethodDeclaratorRestContext voidMethodDeclaratorRest() throws RecognitionException {
@@ -651,14 +587,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_constantDeclarator; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterConstantDeclarator(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitConstantDeclarator(this);
-		}
 	}
 
 	public final ConstantDeclaratorContext constantDeclarator() throws RecognitionException {
@@ -699,14 +627,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_variableDeclarators; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterVariableDeclarators(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitVariableDeclarators(this);
-		}
 	}
 
 	public final VariableDeclaratorsContext variableDeclarators() throws RecognitionException {
@@ -759,14 +679,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_variableDeclarator; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterVariableDeclarator(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitVariableDeclarator(this);
-		}
 	}
 
 	public final VariableDeclaratorContext variableDeclarator() throws RecognitionException {
@@ -821,14 +733,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_constantDeclaratorsRest; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterConstantDeclaratorsRest(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitConstantDeclaratorsRest(this);
-		}
 	}
 
 	public final ConstantDeclaratorsRestContext constantDeclaratorsRest() throws RecognitionException {
@@ -886,14 +790,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_constantDeclaratorRest; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterConstantDeclaratorRest(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitConstantDeclaratorRest(this);
-		}
 	}
 
 	public final ConstantDeclaratorRestContext constantDeclaratorRest() throws RecognitionException {
@@ -950,14 +846,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_variableDeclaratorId; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterVariableDeclaratorId(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitVariableDeclaratorId(this);
-		}
 	}
 
 	public final VariableDeclaratorIdContext variableDeclaratorId() throws RecognitionException {
@@ -1009,14 +897,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_variableInitializer; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterVariableInitializer(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitVariableInitializer(this);
-		}
 	}
 
 	public final VariableInitializerContext variableInitializer() throws RecognitionException {
@@ -1087,14 +967,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_arrayInitializer; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterArrayInitializer(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitArrayInitializer(this);
-		}
 	}
 
 	public final ArrayInitializerContext arrayInitializer() throws RecognitionException {
@@ -1166,14 +1038,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_modifier; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterModifier(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitModifier(this);
-		}
 	}
 
 	public final ModifierContext modifier() throws RecognitionException {
@@ -1215,14 +1079,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_type; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterType(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitType(this);
-		}
 	}
 
 	public final TypeContext type() throws RecognitionException {
@@ -1275,14 +1131,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_primitiveType; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterPrimitiveType(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitPrimitiveType(this);
-		}
 	}
 
 	public final PrimitiveTypeContext primitiveType() throws RecognitionException {
@@ -1325,14 +1173,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_formalParameters; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterFormalParameters(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitFormalParameters(this);
-		}
 	}
 
 	public final FormalParametersContext formalParameters() throws RecognitionException {
@@ -1380,14 +1220,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_formalParameterDecls; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterFormalParameterDecls(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitFormalParameterDecls(this);
-		}
 	}
 
 	public final FormalParameterDeclsContext formalParameterDecls() throws RecognitionException {
@@ -1426,14 +1258,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_formalParameterDeclsRest; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterFormalParameterDeclsRest(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitFormalParameterDeclsRest(this);
-		}
 	}
 
 	public final FormalParameterDeclsRestContext formalParameterDeclsRest() throws RecognitionException {
@@ -1495,14 +1319,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_methodBody; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterMethodBody(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitMethodBody(this);
-		}
 	}
 
 	public final MethodBodyContext methodBody() throws RecognitionException {
@@ -1537,14 +1353,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_literal; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterLiteral(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitLiteral(this);
-		}
 	}
 
 	public final LiteralContext literal() throws RecognitionException {
@@ -1590,14 +1398,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_block; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterBlock(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitBlock(this);
-		}
 	}
 
 	public final BlockContext block() throws RecognitionException {
@@ -1649,14 +1449,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_blockStatement; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterBlockStatement(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitBlockStatement(this);
-		}
 	}
 
 	public final BlockStatementContext blockStatement() throws RecognitionException {
@@ -1737,14 +1529,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_localVariableDeclarationStatement; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterLocalVariableDeclarationStatement(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitLocalVariableDeclarationStatement(this);
-		}
 	}
 
 	public final LocalVariableDeclarationStatementContext localVariableDeclarationStatement() throws RecognitionException {
@@ -1781,14 +1565,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_localVariableDeclaration; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterLocalVariableDeclaration(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitLocalVariableDeclaration(this);
-		}
 	}
 
 	public final LocalVariableDeclarationContext localVariableDeclaration() throws RecognitionException {
@@ -1859,14 +1635,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_statement; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterStatement(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitStatement(this);
-		}
 	}
 
 	public final StatementContext statement() throws RecognitionException {
@@ -2071,14 +1839,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_formalParameter; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterFormalParameter(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitFormalParameter(this);
-		}
 	}
 
 	public final FormalParameterContext formalParameter() throws RecognitionException {
@@ -2115,14 +1875,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_switchBlockStatementGroups; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterSwitchBlockStatementGroups(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitSwitchBlockStatementGroups(this);
-		}
 	}
 
 	public final SwitchBlockStatementGroupsContext switchBlockStatementGroups() throws RecognitionException {
@@ -2176,14 +1928,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_switchBlockStatementGroup; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterSwitchBlockStatementGroup(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitSwitchBlockStatementGroup(this);
-		}
 	}
 
 	public final SwitchBlockStatementGroupContext switchBlockStatementGroup() throws RecognitionException {
@@ -2252,14 +1996,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_switchLabel; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterSwitchLabel(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitSwitchLabel(this);
-		}
 	}
 
 	public final SwitchLabelContext switchLabel() throws RecognitionException {
@@ -2325,14 +2061,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_forControl; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterForControl(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitForControl(this);
-		}
 	}
 
 	public final ForControlContext forControl() throws RecognitionException {
@@ -2413,14 +2141,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_forInit; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterForInit(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitForInit(this);
-		}
 	}
 
 	public final ForInitContext forInit() throws RecognitionException {
@@ -2495,14 +2215,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_enhancedForControl; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterEnhancedForControl(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitEnhancedForControl(this);
-		}
 	}
 
 	public final EnhancedForControlContext enhancedForControl() throws RecognitionException {
@@ -2540,14 +2252,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_forUpdate; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterForUpdate(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitForUpdate(this);
-		}
 	}
 
 	public final ForUpdateContext forUpdate() throws RecognitionException {
@@ -2581,14 +2285,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_parExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterParExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitParExpression(this);
-		}
 	}
 
 	public final ParExpressionContext parExpression() throws RecognitionException {
@@ -2631,14 +2327,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_expressionList; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterExpressionList(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitExpressionList(this);
-		}
 	}
 
 	public final ExpressionListContext expressionList() throws RecognitionException {
@@ -2687,14 +2375,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_statementExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterStatementExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitStatementExpression(this);
-		}
 	}
 
 	public final StatementExpressionContext statementExpression() throws RecognitionException {
@@ -2726,14 +2406,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_constantExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterConstantExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitConstantExpression(this);
-		}
 	}
 
 	public final ConstantExpressionContext constantExpression() throws RecognitionException {
@@ -2771,14 +2443,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_expression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitExpression(this);
-		}
 	}
 
 	public final ExpressionContext expression() throws RecognitionException {
@@ -2832,14 +2496,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_assignmentOperator; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterAssignmentOperator(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitAssignmentOperator(this);
-		}
 	}
 
 	public final AssignmentOperatorContext assignmentOperator() throws RecognitionException {
@@ -2888,14 +2544,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_conditionalExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterConditionalExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitConditionalExpression(this);
-		}
 	}
 
 	public final ConditionalExpressionContext conditionalExpression() throws RecognitionException {
@@ -2951,14 +2599,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_conditionalOrExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterConditionalOrExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitConditionalOrExpression(this);
-		}
 	}
 
 	public final ConditionalOrExpressionContext conditionalOrExpression() throws RecognitionException {
@@ -3014,14 +2654,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_conditionalAndExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterConditionalAndExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitConditionalAndExpression(this);
-		}
 	}
 
 	public final ConditionalAndExpressionContext conditionalAndExpression() throws RecognitionException {
@@ -3077,14 +2709,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_inclusiveOrExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterInclusiveOrExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitInclusiveOrExpression(this);
-		}
 	}
 
 	public final InclusiveOrExpressionContext inclusiveOrExpression() throws RecognitionException {
@@ -3140,14 +2764,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_exclusiveOrExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterExclusiveOrExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitExclusiveOrExpression(this);
-		}
 	}
 
 	public final ExclusiveOrExpressionContext exclusiveOrExpression() throws RecognitionException {
@@ -3203,14 +2819,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_andExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterAndExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitAndExpression(this);
-		}
 	}
 
 	public final AndExpressionContext andExpression() throws RecognitionException {
@@ -3270,14 +2878,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_equalityExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterEqualityExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitEqualityExpression(this);
-		}
 	}
 
 	public final EqualityExpressionContext equalityExpression() throws RecognitionException {
@@ -3343,14 +2943,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_relationalExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterRelationalExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitRelationalExpression(this);
-		}
 	}
 
 	public final RelationalExpressionContext relationalExpression() throws RecognitionException {
@@ -3400,14 +2992,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_relationalOp; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterRelationalOp(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitRelationalOp(this);
-		}
 	}
 
 	public final RelationalOpContext relationalOp() throws RecognitionException {
@@ -3457,14 +3041,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_shiftExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterShiftExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitShiftExpression(this);
-		}
 	}
 
 	public final ShiftExpressionContext shiftExpression() throws RecognitionException {
@@ -3523,14 +3099,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_shiftOp; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterShiftOp(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitShiftOp(this);
-		}
 	}
 
 	public final ShiftOpContext shiftOp() throws RecognitionException {
@@ -3601,14 +3169,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_additiveExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterAdditiveExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitAdditiveExpression(this);
-		}
 	}
 
 	public final AdditiveExpressionContext additiveExpression() throws RecognitionException {
@@ -3680,14 +3240,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_multiplicativeExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterMultiplicativeExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitMultiplicativeExpression(this);
-		}
 	}
 
 	public final MultiplicativeExpressionContext multiplicativeExpression() throws RecognitionException {
@@ -3751,14 +3303,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_unaryExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterUnaryExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitUnaryExpression(this);
-		}
 	}
 
 	public final UnaryExpressionContext unaryExpression() throws RecognitionException {
@@ -3861,14 +3405,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_unaryExpressionNotPlusMinus; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterUnaryExpressionNotPlusMinus(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitUnaryExpressionNotPlusMinus(this);
-		}
 	}
 
 	public final UnaryExpressionNotPlusMinusContext unaryExpressionNotPlusMinus() throws RecognitionException {
@@ -3978,14 +3514,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_castExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterCastExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitCastExpression(this);
-		}
 	}
 
 	public final CastExpressionContext castExpression() throws RecognitionException {
@@ -4102,14 +3630,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_primary; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterPrimary(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitPrimary(this);
-		}
 	}
 
 	public final PrimaryContext primary() throws RecognitionException {
@@ -4240,14 +3760,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_identifierSuffix; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterIdentifierSuffix(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitIdentifierSuffix(this);
-		}
 	}
 
 	public final IdentifierSuffixContext identifierSuffix() throws RecognitionException {
@@ -4345,14 +3857,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_creator; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterCreator(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitCreator(this);
-		}
 	}
 
 	public final CreatorContext creator() throws RecognitionException {
@@ -4396,14 +3900,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_createdName; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterCreatedName(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitCreatedName(this);
-		}
 	}
 
 	public final CreatedNameContext createdName() throws RecognitionException {
@@ -4489,14 +3985,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_arrayCreatorRest; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterArrayCreatorRest(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitArrayCreatorRest(this);
-		}
 	}
 
 	public final ArrayCreatorRestContext arrayCreatorRest() throws RecognitionException {
@@ -4632,14 +4120,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_selector; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterSelector(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitSelector(this);
-		}
 	}
 
 	public final SelectorContext selector() throws RecognitionException {
@@ -4714,14 +4194,6 @@ public class BlufferParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_arguments; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).enterArguments(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BlufferListener ) ((BlufferListener)listener).exitArguments(this);
-		}
 	}
 
 	public final ArgumentsContext arguments() throws RecognitionException {

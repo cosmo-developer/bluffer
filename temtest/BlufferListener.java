@@ -37,16 +37,6 @@ public interface BlufferListener extends ParseTreeListener {
 	 */
 	void exitMemberDecl(BlufferParser.MemberDeclContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link BlufferParser#modifiers}.
-	 * @param ctx the parse tree
-	 */
-	void enterModifiers(BlufferParser.ModifiersContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link BlufferParser#modifiers}.
-	 * @param ctx the parse tree
-	 */
-	void exitModifiers(BlufferParser.ModifiersContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link BlufferParser#memberDeclaration}.
 	 * @param ctx the parse tree
 	 */
@@ -207,16 +197,6 @@ public interface BlufferListener extends ParseTreeListener {
 	 */
 	void exitPrimitiveType(BlufferParser.PrimitiveTypeContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link BlufferParser#variableModifier}.
-	 * @param ctx the parse tree
-	 */
-	void enterVariableModifier(BlufferParser.VariableModifierContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link BlufferParser#variableModifier}.
-	 * @param ctx the parse tree
-	 */
-	void exitVariableModifier(BlufferParser.VariableModifierContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link BlufferParser#formalParameters}.
 	 * @param ctx the parse tree
 	 */
@@ -306,16 +286,6 @@ public interface BlufferListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitLocalVariableDeclaration(BlufferParser.LocalVariableDeclarationContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link BlufferParser#variableModifiers}.
-	 * @param ctx the parse tree
-	 */
-	void enterVariableModifiers(BlufferParser.VariableModifiersContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link BlufferParser#variableModifiers}.
-	 * @param ctx the parse tree
-	 */
-	void exitVariableModifiers(BlufferParser.VariableModifiersContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link BlufferParser#statement}.
 	 * @param ctx the parse tree
