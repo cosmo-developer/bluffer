@@ -9,6 +9,6 @@ package com.bluff.expr;
  *
  * @author Sonu Aryan <cosmo-developer@github.com>
  */
-public class Expression {
-    
+public abstract class Expression {
+    public abstract Object accept(ByteCodeGenerator generator);
 }

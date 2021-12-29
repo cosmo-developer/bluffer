@@ -29,12 +29,6 @@ public interface BlufferVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMemberDecl(BlufferParser.MemberDeclContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link BlufferParser#modifiers}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitModifiers(BlufferParser.ModifiersContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link BlufferParser#memberDeclaration}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -131,12 +125,6 @@ public interface BlufferVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPrimitiveType(BlufferParser.PrimitiveTypeContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link BlufferParser#variableModifier}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitVariableModifier(BlufferParser.VariableModifierContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link BlufferParser#formalParameters}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -190,12 +178,6 @@ public interface BlufferVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitLocalVariableDeclaration(BlufferParser.LocalVariableDeclarationContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link BlufferParser#variableModifiers}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitVariableModifiers(BlufferParser.VariableModifiersContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link BlufferParser#statement}.
 	 * @param ctx the parse tree

@@ -51,18 +51,6 @@ public class BlufferBaseListener implements BlufferListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterModifiers(BlufferParser.ModifiersContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitModifiers(BlufferParser.ModifiersContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterMemberDeclaration(BlufferParser.MemberDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -255,18 +243,6 @@ public class BlufferBaseListener implements BlufferListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterVariableModifier(BlufferParser.VariableModifierContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitVariableModifier(BlufferParser.VariableModifierContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterFormalParameters(BlufferParser.FormalParametersContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -370,18 +346,6 @@ public class BlufferBaseListener implements BlufferListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitLocalVariableDeclaration(BlufferParser.LocalVariableDeclarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterVariableModifiers(BlufferParser.VariableModifiersContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitVariableModifiers(BlufferParser.VariableModifiersContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

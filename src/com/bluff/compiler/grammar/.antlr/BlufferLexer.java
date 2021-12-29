@@ -1,4 +1,4 @@
-// Generated from Bluffer.g4 by ANTLR 4.9.3
+// Generated from e:\jdev-2021\bluffer\src\com\bluff\compiler\grammar\Bluffer.g4 by ANTLR 4.8
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
@@ -10,7 +10,7 @@ import org.antlr.v4.runtime.misc.*;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class BlufferLexer extends Lexer {
-	static { RuntimeMetaData.checkVersion("4.9.3", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.8", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
