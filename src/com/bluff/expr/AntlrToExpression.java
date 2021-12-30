@@ -10,27 +10,36 @@ import com.bluff.compiler.phases.BlufferBaseVisitor;
 import com.bluff.compiler.phases.BlufferParser;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.antlr.v4.runtime.RecognitionException;
+import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.tree.TerminalNode;
 
 /**
  *
  * @author Sonu Aryan <cosmo-developer@github.com>
  */
-public class AntlrToExpression extends BlufferBaseVisitor<Expression>{
+public class AntlrToExpression extends BlufferBaseVisitor<Expression> {
+
     public final SymbolTable globalSymbolTable;
     public SymbolTable currentSymbolTable;
-    public int finalOrnormal=1;//even means final and odd means normal
     public final ArrayList<Expression> expressions;
-    public AntlrToExpression(){
-        this.globalSymbolTable=new SymbolTable(null);
-        expressions=new ArrayList<>();
-        this.currentSymbolTable=globalSymbolTable;
+
+    public AntlrToExpression() {
+        this.globalSymbolTable = new SymbolTable(null);
+        expressions = new ArrayList<>();
+        this.currentSymbolTable = globalSymbolTable;
     }
-    public void setCurrentTable(SymbolTable table){
-        this.currentSymbolTable=table;
+
+    public void setCurrentTable(SymbolTable table) {
+        this.currentSymbolTable = table;
     }
-    public SymbolTable getCurrentTable(){
+
+    public SymbolTable getCurrentTable() {
         return this.currentSymbolTable;
     }
+
     @Override
     public Expression visitArguments(BlufferParser.ArgumentsContext ctx) {
         return super.visitArguments(ctx); //To change body of generated methods, choose Tools | Templates.
@@ -38,6 +47,7 @@ public class AntlrToExpression extends BlufferBaseVisitor<Expression>{
 
     @Override
     public Expression visitSelector(BlufferParser.SelectorContext ctx) {
+        
         return super.visitSelector(ctx); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -59,11 +69,13 @@ public class AntlrToExpression extends BlufferBaseVisitor<Expression>{
 
     @Override
     public Expression visitIdentifierSuffix(BlufferParser.IdentifierSuffixContext ctx) {
+
         return super.visitIdentifierSuffix(ctx); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public Expression visitPrimary(BlufferParser.PrimaryContext ctx) {
+
         return super.visitPrimary(ctx); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -144,16 +156,22 @@ public class AntlrToExpression extends BlufferBaseVisitor<Expression>{
 
     @Override
     public Expression visitConditionalExpression(BlufferParser.ConditionalExpressionContext ctx) {
+        
         return super.visitConditionalExpression(ctx); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public Expression visitAssignmentOperator(BlufferParser.AssignmentOperatorContext ctx) {
-        return super.visitAssignmentOperator(ctx); //To change body of generated methods, choose Tools | Templates.
+        TerminalNode p = chooseNotNull(ctx.ADD_ASSIGN(), ctx.AND_ASSIGN(), ctx.ASSIGN(), ctx.DIV_ASSIGN(),
+                ctx.LSHIFT_ASSIGN(), ctx.MOD_ASSIGN(), ctx.MUL_ASSIGN(), ctx.OR_ASSIGN(),
+                ctx.RSHIFT_ASSIGN(), ctx.SUB_ASSIGN(), ctx.URSHIFT_ASSIGN(), ctx.XOR_ASSIGN());
+
+        return new AssignmentOperatorExpression(p.getSymbol());
     }
 
     @Override
     public Expression visitExpression(BlufferParser.ExpressionContext ctx) {
+
         return super.visitExpression(ctx); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -244,6 +262,7 @@ public class AntlrToExpression extends BlufferBaseVisitor<Expression>{
 
     @Override
     public Expression visitLiteral(BlufferParser.LiteralContext ctx) {
+        System.out.println(ctx.StringLiteral());
         return super.visitLiteral(ctx); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -267,15 +286,32 @@ public class AntlrToExpression extends BlufferBaseVisitor<Expression>{
         return super.visitFormalParameters(ctx); //To change body of generated methods, choose Tools | Templates.
     }
 
-
     @Override
     public Expression visitPrimitiveType(BlufferParser.PrimitiveTypeContext ctx) {
         return super.visitPrimitiveType(ctx); //To change body of generated methods, choose Tools | Templates.
     }
 
+    public static TerminalNode chooseNotNull(TerminalNode... terminals) {
+        for (TerminalNode tm : terminals) {
+            if (tm != null) {
+                return tm;
+            }
+        }
+        return null;
+    }
+
     @Override
     public Expression visitType(BlufferParser.TypeContext ctx) {
-        return super.visitType(ctx); //To change body of generated methods, choose Tools | Templates.
+        TypeExpression expression = null;
+        TerminalNode pType = chooseNotNull(ctx.primitiveType().BYTE(),
+                ctx.primitiveType().CHAR(), ctx.primitiveType().DOUBLE(),
+                ctx.primitiveType().FLOAT(), ctx.primitiveType().INT(),
+                ctx.primitiveType().LONG(), ctx.primitiveType().SHORT(),
+                ctx.primitiveType().STRING(),
+                ctx.primitiveType().BOOLEAN()
+        );
+        expression = new TypeExpression(pType.getText());
+        return expression;
     }
 
     @Override
@@ -325,7 +361,11 @@ public class AntlrToExpression extends BlufferBaseVisitor<Expression>{
 
     @Override
     public Expression visitVoidMethodDeclaratorRest(BlufferParser.VoidMethodDeclaratorRestContext ctx) {
-        System.out.println(ctx);
+        if (ctx.SEMI()!=null){
+            return null;
+        }else{
+            
+        }
         return null;
     }
 
@@ -334,41 +374,82 @@ public class AntlrToExpression extends BlufferBaseVisitor<Expression>{
         return super.visitMethodDeclaratorRest(ctx); //To change body of generated methods, choose Tools | Templates.
     }
 
+    public static String concatElement(List<TerminalNode> list) {
+        String tobe = "";
+        tobe = list.stream().map((o) -> o.getSymbol().getText()).reduce(tobe, String::concat);
+        return tobe;
+    }
+
     @Override
     public Expression visitFieldDeclaration(BlufferParser.FieldDeclarationContext ctx) {
-        return super.visitFieldDeclaration(ctx); //To change body of generated methods, choose Tools | Templates.
+        FieldDeclarationExpression field = null;
+        ArrayList<Token> identifiers = new ArrayList<>();
+        ArrayList<Expression> initializers = new ArrayList<>();
+        ArrayList<String> extraField = new ArrayList<>();
+        List<BlufferParser.VariableDeclaratorContext> variables
+                = ctx.variableDeclarators().variableDeclarator();
+        variables.forEach((var) -> {
+            identifiers.add(var.variableDeclaratorId().Identifier().getSymbol());
+            if (var.ASSIGN() != null) {
+                initializers.add(this.visit(var.variableInitializer()));
+            } else {
+                initializers.add(null);
+            }
+            extraField.add(concatElement(var.variableDeclaratorId().LBRACK()));
+        });
+        field = new FieldDeclarationExpression(identifiers, initializers, extraField);
+        return field;
     }
 
     @Override
     public Expression visitMethodDeclaration(BlufferParser.MethodDeclarationContext ctx) {
+        MethodDeclarationExpression expression = null;
         BlufferParser.MethodDeclaratorRestContext declarator = ctx.methodDeclaratorRest();
         BlufferParser.FormalParametersContext parameters = declarator.formalParameters();
         BlufferParser.MethodBodyContext methodBody = declarator.methodBody();
         BlufferParser.BlockContext block = methodBody.block();
         List<BlufferParser.BlockStatementContext> blockStatement = block.blockStatement();
-        SymbolTable table=new SymbolTable(this.getCurrentTable());
-        
-        return null;
+        SymbolTable table = new SymbolTable(this.getCurrentTable());
+        this.setCurrentTable(table);
+        Token symbol = ctx.Identifier().getSymbol();
+        this.setCurrentTable(table.parent);
+        return expression;
     }
 
     @Override
     public Expression visitMemberDeclaration(BlufferParser.MemberDeclarationContext ctx) {
-        if (ctx.methodDeclaration()!=null){
-            this.visit(ctx.methodDeclaration());
+        MemberDeclarationExpression expression = null;
+        TypeExpression typeExpression = (TypeExpression) this.visit(ctx.type());
+        Expression declExpr = this.visit(ctx.getChild(1));
+        if (declExpr instanceof FieldDeclarationExpression) {
+            FieldDeclarationExpression field = (FieldDeclarationExpression) declExpr;
+            for (int i = 0; i < field.identifier.size(); i++) {
+                String type = "";
+                type = concatElement(ctx.type().LBRACK()) + field.extraField.get(i) + typeExpression.type;
+                globalSymbolTable.addSymbol(field.identifier.get(i), type, "");
+
+            }
+        } else if (declExpr instanceof MethodDeclarationExpression) {
+            MethodDeclarationExpression method = (MethodDeclarationExpression) (declExpr);
         }
-        return null;
+        expression = new MemberDeclarationExpression(typeExpression, declExpr);
+        return expression;
     }
 
     @Override
     public Expression visitMemberDecl(BlufferParser.MemberDeclContext ctx) {
         
-        return null;
+        return this.visit(ctx.getChild(0));
     }
-    
+
     @Override
     public Expression visitProgramBodyDeclaration(BlufferParser.ProgramBodyDeclarationContext ctx) {
-        if (ctx.SEMI()!=null)return null;
-        
-        return null;
+        if (ctx.SEMI() != null) {
+            return null;
+        }
+        if (ctx.memberDecl().VOID() != null) {
+            return this.visit(ctx.memberDecl().voidMethodDeclaratorRest());
+        }
+        return this.visit(ctx.memberDecl());
     }
 }

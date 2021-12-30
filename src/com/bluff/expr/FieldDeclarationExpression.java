@@ -5,6 +5,7 @@
  */
 package com.bluff.expr;
 
+import java.util.ArrayList;
 import org.antlr.v4.runtime.Token;
 
 /**
@@ -12,11 +13,14 @@ import org.antlr.v4.runtime.Token;
  * @author Sonu Aryan <cosmo-developer@github.com>
  */
 public class FieldDeclarationExpression extends Expression{
-    public final Token identifier;
-    public final Expression initializer;
-    public FieldDeclarationExpression(Token identifier, Expression initializer) {
+    public final ArrayList<Token> identifier;
+    public final ArrayList<Expression> initializer;
+    public final ArrayList<String> extraField;
+    public FieldDeclarationExpression(ArrayList<Token> identifier,
+            ArrayList<Expression> initializer,ArrayList<String> extraField) {
         this.identifier = identifier;
         this.initializer = initializer;
+        this.extraField=extraField;
     }
     
     @Override

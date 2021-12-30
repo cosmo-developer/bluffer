@@ -16,31 +16,38 @@ import org.antlr.v4.runtime.Token;
  */
 public class SymbolTable {
     
-    public static enum Type{
-        INT,CHAR,DOUBLE,FLOAT,
-        SHORT,LONG,BOOL,STRING,
-        BYTE,METHODNAME
-    }
     public class Symbol{
         public final Token id;
-        public final Type type;
+        public final String type;
         public final Object extra;
 
-        public Symbol(Token id, Type type,String extra) {
+        public Symbol(Token id, String type,String extra) {
             this.id = id;
             this.type = type;
             this.extra=extra;
         }
+
+        @Override
+        public String toString() {
+            return "Symbol{" + "id=" + id + ", type=" + type + ", extra=" + extra + '}';
+        }
+        
         
     }
     public final SymbolTable parent;
-    private final HashMap<String,Symbol> symbols;
+    public final HashMap<String,Symbol> symbols;
     public SymbolTable(SymbolTable parent){
         this.parent=parent;
         this.symbols=new HashMap<>();
     }
-    public boolean addSymbol(Token id,Type type,String extra){
+    public boolean addSymbol(Token id,String type,String extra){
         if (symbols.get(id.getText())!=null){
+            System.err.printf("Redefinitiion of symbol:%s, at line:%d, column:%d | "
+                    + "Previousely defined at line:%d column:%d\n", id.getText(),
+                        id.getLine(),id.getCharPositionInLine(),
+                        symbols.get(id.getText()).id.getLine(),
+                        symbols.get(id.getText()).id.getCharPositionInLine()
+                    );
             return false;
         }
         this.symbols.put(id.getText(), new Symbol(id,type,extra));

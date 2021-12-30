@@ -17,19 +17,18 @@ public class BlufferParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, T__1=2, T__2=3, T__3=4, BOOLEAN=5, BREAK=6, BYTE=7, CASE=8, CHAR=9, 
-		CONTINUE=10, DEFAULT=11, DO=12, DOUBLE=13, ELSE=14, FINAL=15, FLOAT=16, 
-		FOR=17, IF=18, INT=19, LONG=20, NEW=21, RETURN=22, SHORT=23, SWITCH=24, 
-		TRANSIENT=25, VOID=26, WHILE=27, IntegerLiteral=28, FloatingPointLiteral=29, 
-		BooleanLiteral=30, CharacterLiteral=31, StringLiteral=32, NullLiteral=33, 
-		LPAREN=34, RPAREN=35, LBRACE=36, RBRACE=37, LBRACK=38, RBRACK=39, SEMI=40, 
-		COMMA=41, DOT=42, ASSIGN=43, GT=44, LT=45, BANG=46, TILDE=47, QUESTION=48, 
-		COLON=49, EQUAL=50, LE=51, GE=52, NOTEQUAL=53, AND=54, OR=55, INC=56, 
-		DEC=57, ADD=58, SUB=59, MUL=60, DIV=61, BITAND=62, BITOR=63, CARET=64, 
-		MOD=65, ADD_ASSIGN=66, SUB_ASSIGN=67, MUL_ASSIGN=68, DIV_ASSIGN=69, AND_ASSIGN=70, 
-		OR_ASSIGN=71, XOR_ASSIGN=72, MOD_ASSIGN=73, LSHIFT_ASSIGN=74, RSHIFT_ASSIGN=75, 
-		URSHIFT_ASSIGN=76, Identifier=77, AT=78, ELLIPSIS=79, WS=80, COMMENT=81, 
-		LINE_COMMENT=82;
+		T__0=1, T__1=2, T__2=3, BOOLEAN=4, BREAK=5, BYTE=6, CASE=7, CHAR=8, CONTINUE=9, 
+		DEFAULT=10, DO=11, DOUBLE=12, ELSE=13, FINAL=14, FLOAT=15, FOR=16, IF=17, 
+		INT=18, STRING=19, LONG=20, NEW=21, RETURN=22, SHORT=23, SWITCH=24, TRANSIENT=25, 
+		VOID=26, WHILE=27, IntegerLiteral=28, FloatingPointLiteral=29, BooleanLiteral=30, 
+		CharacterLiteral=31, StringLiteral=32, NullLiteral=33, LPAREN=34, RPAREN=35, 
+		LBRACE=36, RBRACE=37, LBRACK=38, RBRACK=39, SEMI=40, COMMA=41, DOT=42, 
+		ASSIGN=43, GT=44, LT=45, BANG=46, TILDE=47, QUESTION=48, COLON=49, EQUAL=50, 
+		LE=51, GE=52, NOTEQUAL=53, AND=54, OR=55, INC=56, DEC=57, ADD=58, SUB=59, 
+		MUL=60, DIV=61, BITAND=62, BITOR=63, CARET=64, MOD=65, ADD_ASSIGN=66, 
+		SUB_ASSIGN=67, MUL_ASSIGN=68, DIV_ASSIGN=69, AND_ASSIGN=70, OR_ASSIGN=71, 
+		XOR_ASSIGN=72, MOD_ASSIGN=73, LSHIFT_ASSIGN=74, RSHIFT_ASSIGN=75, URSHIFT_ASSIGN=76, 
+		Identifier=77, AT=78, ELLIPSIS=79, WS=80, COMMENT=81, LINE_COMMENT=82;
 	public static final int
 		RULE_programBody = 0, RULE_programBodyDeclaration = 1, RULE_memberDecl = 2, 
 		RULE_memberDeclaration = 3, RULE_methodDeclaration = 4, RULE_fieldDeclaration = 5, 
@@ -78,25 +77,25 @@ public class BlufferParser extends Parser {
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "'bool'", "'string'", "'this'", "'class'", "'boolean'", "'break'", 
-			"'byte'", "'case'", "'char'", "'continue'", "'default'", "'do'", "'double'", 
-			"'else'", "'final'", "'float'", "'for'", "'if'", "'int'", "'long'", "'new'", 
-			"'return'", "'short'", "'switch'", "'transient'", "'void'", "'while'", 
-			null, null, null, null, null, "'null'", "'('", "')'", "'{'", "'}'", "'['", 
-			"']'", "';'", "','", "'.'", "'='", "'>'", "'<'", "'!'", "'~'", "'?'", 
-			"':'", "'=='", "'<='", "'>='", "'!='", "'&&'", "'||'", "'++'", "'--'", 
-			"'+'", "'-'", "'*'", "'/'", "'&'", "'|'", "'^'", "'%'", "'+='", "'-='", 
-			"'*='", "'/='", "'&='", "'|='", "'^='", "'%='", "'<<='", "'>>='", "'>>>='", 
-			null, "'@'", "'...'"
+			null, "'jitter'", "'this'", "'class'", "'bool'", "'break'", "'byte'", 
+			"'case'", "'char'", "'continue'", "'default'", "'do'", "'double'", "'else'", 
+			"'final'", "'float'", "'for'", "'if'", "'int'", "'string'", "'long'", 
+			"'new'", "'return'", "'short'", "'switch'", "'transient'", "'void'", 
+			"'while'", null, null, null, null, null, "'null'", "'('", "')'", "'{'", 
+			"'}'", "'['", "']'", "';'", "','", "'.'", "'='", "'>'", "'<'", "'!'", 
+			"'~'", "'?'", "':'", "'=='", "'<='", "'>='", "'!='", "'&&'", "'||'", 
+			"'++'", "'--'", "'+'", "'-'", "'*'", "'/'", "'&'", "'|'", "'^'", "'%'", 
+			"'+='", "'-='", "'*='", "'/='", "'&='", "'|='", "'^='", "'%='", "'<<='", 
+			"'>>='", "'>>>='", null, "'@'", "'...'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, null, null, null, null, "BOOLEAN", "BREAK", "BYTE", "CASE", "CHAR", 
-			"CONTINUE", "DEFAULT", "DO", "DOUBLE", "ELSE", "FINAL", "FLOAT", "FOR", 
-			"IF", "INT", "LONG", "NEW", "RETURN", "SHORT", "SWITCH", "TRANSIENT", 
-			"VOID", "WHILE", "IntegerLiteral", "FloatingPointLiteral", "BooleanLiteral", 
+			null, null, null, null, "BOOLEAN", "BREAK", "BYTE", "CASE", "CHAR", "CONTINUE", 
+			"DEFAULT", "DO", "DOUBLE", "ELSE", "FINAL", "FLOAT", "FOR", "IF", "INT", 
+			"STRING", "LONG", "NEW", "RETURN", "SHORT", "SWITCH", "TRANSIENT", "VOID", 
+			"WHILE", "IntegerLiteral", "FloatingPointLiteral", "BooleanLiteral", 
 			"CharacterLiteral", "StringLiteral", "NullLiteral", "LPAREN", "RPAREN", 
 			"LBRACE", "RBRACE", "LBRACK", "RBRACK", "SEMI", "COMMA", "DOT", "ASSIGN", 
 			"GT", "LT", "BANG", "TILDE", "QUESTION", "COLON", "EQUAL", "LE", "GE", 
@@ -189,7 +188,7 @@ public class BlufferParser extends Parser {
 			setState(135);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__1) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << SHORT) | (1L << VOID) | (1L << SEMI))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << STRING) | (1L << LONG) | (1L << SHORT) | (1L << VOID) | (1L << SEMI))) != 0)) {
 				{
 				{
 				setState(132);
@@ -244,12 +243,13 @@ public class BlufferParser extends Parser {
 				}
 				break;
 			case T__0:
-			case T__1:
+			case BOOLEAN:
 			case BYTE:
 			case CHAR:
 			case DOUBLE:
 			case FLOAT:
 			case INT:
+			case STRING:
 			case LONG:
 			case SHORT:
 			case VOID:
@@ -302,12 +302,13 @@ public class BlufferParser extends Parser {
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T__0:
-			case T__1:
+			case BOOLEAN:
 			case BYTE:
 			case CHAR:
 			case DOUBLE:
 			case FLOAT:
 			case INT:
+			case STRING:
 			case LONG:
 			case SHORT:
 				enterOuterAlt(_localctx, 1);
@@ -989,7 +990,7 @@ public class BlufferParser extends Parser {
 				arrayInitializer();
 				}
 				break;
-			case T__2:
+			case T__1:
 			case NEW:
 			case IntegerLiteral:
 			case FloatingPointLiteral:
@@ -1063,7 +1064,7 @@ public class BlufferParser extends Parser {
 			setState(234);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__2) | (1L << NEW) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN) | (1L << LBRACE) | (1L << BANG) | (1L << TILDE) | (1L << INC) | (1L << DEC) | (1L << ADD) | (1L << SUB))) != 0) || _la==Identifier) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__1) | (1L << NEW) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN) | (1L << LBRACE) | (1L << BANG) | (1L << TILDE) | (1L << INC) | (1L << DEC) | (1L << ADD) | (1L << SUB))) != 0) || _la==Identifier) {
 				{
 				setState(223);
 				variableInitializer();
@@ -1211,6 +1212,7 @@ public class BlufferParser extends Parser {
 	}
 
 	public static class PrimitiveTypeContext extends ParserRuleContext {
+		public TerminalNode BOOLEAN() { return getToken(BlufferParser.BOOLEAN, 0); }
 		public TerminalNode CHAR() { return getToken(BlufferParser.CHAR, 0); }
 		public TerminalNode BYTE() { return getToken(BlufferParser.BYTE, 0); }
 		public TerminalNode SHORT() { return getToken(BlufferParser.SHORT, 0); }
@@ -1218,6 +1220,7 @@ public class BlufferParser extends Parser {
 		public TerminalNode LONG() { return getToken(BlufferParser.LONG, 0); }
 		public TerminalNode FLOAT() { return getToken(BlufferParser.FLOAT, 0); }
 		public TerminalNode DOUBLE() { return getToken(BlufferParser.DOUBLE, 0); }
+		public TerminalNode STRING() { return getToken(BlufferParser.STRING, 0); }
 		public PrimitiveTypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1238,7 +1241,7 @@ public class BlufferParser extends Parser {
 			{
 			setState(248);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__1) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << SHORT))) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << STRING) | (1L << LONG) | (1L << SHORT))) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -1288,7 +1291,7 @@ public class BlufferParser extends Parser {
 			setState(252);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__1) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << SHORT))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << STRING) | (1L << LONG) | (1L << SHORT))) != 0)) {
 				{
 				setState(251);
 				formalParameterDecls();
@@ -1538,7 +1541,7 @@ public class BlufferParser extends Parser {
 			setState(276);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__1) | (1L << T__2) | (1L << BREAK) | (1L << BYTE) | (1L << CHAR) | (1L << CONTINUE) | (1L << DO) | (1L << DOUBLE) | (1L << FLOAT) | (1L << FOR) | (1L << IF) | (1L << INT) | (1L << LONG) | (1L << NEW) | (1L << RETURN) | (1L << SHORT) | (1L << SWITCH) | (1L << WHILE) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN) | (1L << LBRACE) | (1L << SEMI) | (1L << BANG) | (1L << TILDE) | (1L << INC) | (1L << DEC) | (1L << ADD) | (1L << SUB))) != 0) || _la==Identifier) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__1) | (1L << BOOLEAN) | (1L << BREAK) | (1L << BYTE) | (1L << CHAR) | (1L << CONTINUE) | (1L << DO) | (1L << DOUBLE) | (1L << FLOAT) | (1L << FOR) | (1L << IF) | (1L << INT) | (1L << STRING) | (1L << LONG) | (1L << NEW) | (1L << RETURN) | (1L << SHORT) | (1L << SWITCH) | (1L << WHILE) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN) | (1L << LBRACE) | (1L << SEMI) | (1L << BANG) | (1L << TILDE) | (1L << INC) | (1L << DEC) | (1L << ADD) | (1L << SUB))) != 0) || _la==Identifier) {
 				{
 				{
 				setState(273);
@@ -1590,12 +1593,13 @@ public class BlufferParser extends Parser {
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T__0:
-			case T__1:
+			case BOOLEAN:
 			case BYTE:
 			case CHAR:
 			case DOUBLE:
 			case FLOAT:
 			case INT:
+			case STRING:
 			case LONG:
 			case SHORT:
 				enterOuterAlt(_localctx, 1);
@@ -1604,7 +1608,7 @@ public class BlufferParser extends Parser {
 				localVariableDeclarationStatement();
 				}
 				break;
-			case T__2:
+			case T__1:
 			case BREAK:
 			case CONTINUE:
 			case DO:
@@ -1885,7 +1889,7 @@ public class BlufferParser extends Parser {
 				setState(323);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__2) | (1L << NEW) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN) | (1L << BANG) | (1L << TILDE) | (1L << INC) | (1L << DEC) | (1L << ADD) | (1L << SUB))) != 0) || _la==Identifier) {
+				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__1) | (1L << NEW) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN) | (1L << BANG) | (1L << TILDE) | (1L << INC) | (1L << DEC) | (1L << ADD) | (1L << SUB))) != 0) || _la==Identifier) {
 					{
 					setState(322);
 					expression();
@@ -2122,7 +2126,7 @@ public class BlufferParser extends Parser {
 			setState(362);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__1) | (1L << T__2) | (1L << BREAK) | (1L << BYTE) | (1L << CHAR) | (1L << CONTINUE) | (1L << DO) | (1L << DOUBLE) | (1L << FLOAT) | (1L << FOR) | (1L << IF) | (1L << INT) | (1L << LONG) | (1L << NEW) | (1L << RETURN) | (1L << SHORT) | (1L << SWITCH) | (1L << WHILE) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN) | (1L << LBRACE) | (1L << SEMI) | (1L << BANG) | (1L << TILDE) | (1L << INC) | (1L << DEC) | (1L << ADD) | (1L << SUB))) != 0) || _la==Identifier) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__1) | (1L << BOOLEAN) | (1L << BREAK) | (1L << BYTE) | (1L << CHAR) | (1L << CONTINUE) | (1L << DO) | (1L << DOUBLE) | (1L << FLOAT) | (1L << FOR) | (1L << IF) | (1L << INT) | (1L << STRING) | (1L << LONG) | (1L << NEW) | (1L << RETURN) | (1L << SHORT) | (1L << SWITCH) | (1L << WHILE) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN) | (1L << LBRACE) | (1L << SEMI) | (1L << BANG) | (1L << TILDE) | (1L << INC) | (1L << DEC) | (1L << ADD) | (1L << SUB))) != 0) || _la==Identifier) {
 				{
 				{
 				setState(359);
@@ -2255,7 +2259,7 @@ public class BlufferParser extends Parser {
 				setState(375);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__1) | (1L << T__2) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << NEW) | (1L << SHORT) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN) | (1L << BANG) | (1L << TILDE) | (1L << INC) | (1L << DEC) | (1L << ADD) | (1L << SUB))) != 0) || _la==Identifier) {
+				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__1) | (1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << STRING) | (1L << LONG) | (1L << NEW) | (1L << SHORT) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN) | (1L << BANG) | (1L << TILDE) | (1L << INC) | (1L << DEC) | (1L << ADD) | (1L << SUB))) != 0) || _la==Identifier) {
 					{
 					setState(374);
 					forInit();
@@ -2267,7 +2271,7 @@ public class BlufferParser extends Parser {
 				setState(379);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__2) | (1L << NEW) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN) | (1L << BANG) | (1L << TILDE) | (1L << INC) | (1L << DEC) | (1L << ADD) | (1L << SUB))) != 0) || _la==Identifier) {
+				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__1) | (1L << NEW) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN) | (1L << BANG) | (1L << TILDE) | (1L << INC) | (1L << DEC) | (1L << ADD) | (1L << SUB))) != 0) || _la==Identifier) {
 					{
 					setState(378);
 					expression();
@@ -2279,7 +2283,7 @@ public class BlufferParser extends Parser {
 				setState(383);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__2) | (1L << NEW) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN) | (1L << BANG) | (1L << TILDE) | (1L << INC) | (1L << DEC) | (1L << ADD) | (1L << SUB))) != 0) || _la==Identifier) {
+				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__1) | (1L << NEW) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN) | (1L << BANG) | (1L << TILDE) | (1L << INC) | (1L << DEC) | (1L << ADD) | (1L << SUB))) != 0) || _la==Identifier) {
 					{
 					setState(382);
 					forUpdate();
@@ -2327,12 +2331,13 @@ public class BlufferParser extends Parser {
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T__0:
-			case T__1:
+			case BOOLEAN:
 			case BYTE:
 			case CHAR:
 			case DOUBLE:
 			case FLOAT:
 			case INT:
+			case STRING:
 			case LONG:
 			case SHORT:
 				enterOuterAlt(_localctx, 1);
@@ -2341,7 +2346,7 @@ public class BlufferParser extends Parser {
 				localVariableDeclaration();
 				}
 				break;
-			case T__2:
+			case T__1:
 			case NEW:
 			case IntegerLiteral:
 			case FloatingPointLiteral:
@@ -3634,7 +3639,7 @@ public class BlufferParser extends Parser {
 				unaryExpression();
 				}
 				break;
-			case T__2:
+			case T__1:
 			case NEW:
 			case IntegerLiteral:
 			case FloatingPointLiteral:
@@ -3841,12 +3846,13 @@ public class BlufferParser extends Parser {
 				_errHandler.sync(this);
 				switch (_input.LA(1)) {
 				case T__0:
-				case T__1:
+				case BOOLEAN:
 				case BYTE:
 				case CHAR:
 				case DOUBLE:
 				case FLOAT:
 				case INT:
+				case STRING:
 				case LONG:
 				case SHORT:
 					{
@@ -3854,7 +3860,7 @@ public class BlufferParser extends Parser {
 					type();
 					}
 					break;
-				case T__2:
+				case T__1:
 				case NEW:
 				case IntegerLiteral:
 				case FloatingPointLiteral:
@@ -3949,11 +3955,11 @@ public class BlufferParser extends Parser {
 				parExpression();
 				}
 				break;
-			case T__2:
+			case T__1:
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(567);
-				match(T__2);
+				match(T__1);
 				setState(569);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
@@ -4098,7 +4104,7 @@ public class BlufferParser extends Parser {
 				setState(593);
 				match(DOT);
 				setState(594);
-				match(T__3);
+				match(T__2);
 				}
 				break;
 			case 2:
@@ -4125,7 +4131,7 @@ public class BlufferParser extends Parser {
 				setState(600);
 				match(DOT);
 				setState(601);
-				match(T__2);
+				match(T__1);
 				}
 				break;
 			case 5:
@@ -4250,12 +4256,13 @@ public class BlufferParser extends Parser {
 				}
 				break;
 			case T__0:
-			case T__1:
+			case BOOLEAN:
 			case BYTE:
 			case CHAR:
 			case DOUBLE:
 			case FLOAT:
 			case INT:
+			case STRING:
 			case LONG:
 			case SHORT:
 				enterOuterAlt(_localctx, 2);
@@ -4345,7 +4352,7 @@ public class BlufferParser extends Parser {
 				arrayInitializer();
 				}
 				break;
-			case T__2:
+			case T__1:
 			case NEW:
 			case IntegerLiteral:
 			case FloatingPointLiteral:
@@ -4539,7 +4546,7 @@ public class BlufferParser extends Parser {
 			setState(667);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__2) | (1L << NEW) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN) | (1L << BANG) | (1L << TILDE) | (1L << INC) | (1L << DEC) | (1L << ADD) | (1L << SUB))) != 0) || _la==Identifier) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__1) | (1L << NEW) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN) | (1L << BANG) | (1L << TILDE) | (1L << INC) | (1L << DEC) | (1L << ADD) | (1L << SUB))) != 0) || _la==Identifier) {
 				{
 				setState(666);
 				expressionList();
@@ -4612,9 +4619,9 @@ public class BlufferParser extends Parser {
 		"\16A\u028a\13A\5A\u028c\nA\3B\3B\3B\5B\u0291\nB\3B\3B\3B\3B\3B\3B\3B\5"+
 		"B\u029a\nB\3C\3C\5C\u029e\nC\3C\3C\3C\2\2D\2\4\6\b\n\f\16\20\22\24\26"+
 		"\30\32\34\36 \"$&(*,.\60\62\64\668:<>@BDFHJLNPRTVXZ\\^`bdfhjlnprtvxz|"+
-		"~\u0080\u0082\u0084\2\n\t\2\3\4\t\t\13\13\17\17\22\22\25\26\31\31\3\2"+
-		"\36#\4\2--DN\4\2\64\64\67\67\4\2./\65\66\3\2<=\4\2>?CC\3\2:;\2\u02bd\2"+
-		"\u0089\3\2\2\2\4\u008e\3\2\2\2\6\u0094\3\2\2\2\b\u0096\3\2\2\2\n\u009b"+
+		"~\u0080\u0082\u0084\2\n\n\2\3\3\6\6\b\b\n\n\16\16\21\21\24\26\31\31\3"+
+		"\2\36#\4\2--DN\4\2\64\64\67\67\4\2./\65\66\3\2<=\4\2>?CC\3\2:;\2\u02bd"+
+		"\2\u0089\3\2\2\2\4\u008e\3\2\2\2\6\u0094\3\2\2\2\b\u0096\3\2\2\2\n\u009b"+
 		"\3\2\2\2\f\u009e\3\2\2\2\16\u00a1\3\2\2\2\20\u00ad\3\2\2\2\22\u00b2\3"+
 		"\2\2\2\24\u00b5\3\2\2\2\26\u00bd\3\2\2\2\30\u00c2\3\2\2\2\32\u00ce\3\2"+
 		"\2\2\34\u00d4\3\2\2\2\36\u00de\3\2\2\2 \u00e0\3\2\2\2\"\u00f0\3\2\2\2"+
@@ -4662,7 +4669,7 @@ public class BlufferParser extends Parser {
 		"\u00e6\u00e4\3\2\2\2\u00e6\u00e7\3\2\2\2\u00e7\u00ea\3\2\2\2\u00e8\u00e6"+
 		"\3\2\2\2\u00e9\u00eb\7+\2\2\u00ea\u00e9\3\2\2\2\u00ea\u00eb\3\2\2\2\u00eb"+
 		"\u00ed\3\2\2\2\u00ec\u00e1\3\2\2\2\u00ec\u00ed\3\2\2\2\u00ed\u00ee\3\2"+
-		"\2\2\u00ee\u00ef\7\'\2\2\u00ef!\3\2\2\2\u00f0\u00f1\7\21\2\2\u00f1#\3"+
+		"\2\2\u00ee\u00ef\7\'\2\2\u00ef!\3\2\2\2\u00f0\u00f1\7\20\2\2\u00f1#\3"+
 		"\2\2\2\u00f2\u00f7\5&\24\2\u00f3\u00f4\7(\2\2\u00f4\u00f6\7)\2\2\u00f5"+
 		"\u00f3\3\2\2\2\u00f6\u00f9\3\2\2\2\u00f7\u00f5\3\2\2\2\u00f7\u00f8\3\2"+
 		"\2\2\u00f8%\3\2\2\2\u00f9\u00f7\3\2\2\2\u00fa\u00fb\t\2\2\2\u00fb\'\3"+
@@ -4679,18 +4686,18 @@ public class BlufferParser extends Parser {
 		"\u011e\5:\36\2\u011d\u011b\3\2\2\2\u011d\u011c\3\2\2\2\u011e\65\3\2\2"+
 		"\2\u011f\u0120\58\35\2\u0120\u0121\7*\2\2\u0121\67\3\2\2\2\u0122\u0123"+
 		"\5$\23\2\u0123\u0124\5\24\13\2\u01249\3\2\2\2\u0125\u015a\5\62\32\2\u0126"+
-		"\u0127\7\24\2\2\u0127\u0128\5L\'\2\u0128\u012b\5:\36\2\u0129\u012a\7\20"+
+		"\u0127\7\23\2\2\u0127\u0128\5L\'\2\u0128\u012b\5:\36\2\u0129\u012a\7\17"+
 		"\2\2\u012a\u012c\5:\36\2\u012b\u0129\3\2\2\2\u012b\u012c\3\2\2\2\u012c"+
-		"\u015a\3\2\2\2\u012d\u012e\7\23\2\2\u012e\u012f\7$\2\2\u012f\u0130\5D"+
+		"\u015a\3\2\2\2\u012d\u012e\7\22\2\2\u012e\u012f\7$\2\2\u012f\u0130\5D"+
 		"#\2\u0130\u0131\7%\2\2\u0131\u0132\5:\36\2\u0132\u015a\3\2\2\2\u0133\u0134"+
 		"\7\35\2\2\u0134\u0135\5L\'\2\u0135\u0136\5:\36\2\u0136\u015a\3\2\2\2\u0137"+
-		"\u0138\7\16\2\2\u0138\u0139\5:\36\2\u0139\u013a\7\35\2\2\u013a\u013b\5"+
+		"\u0138\7\r\2\2\u0138\u0139\5:\36\2\u0139\u013a\7\35\2\2\u013a\u013b\5"+
 		"L\'\2\u013b\u013c\7*\2\2\u013c\u015a\3\2\2\2\u013d\u013e\7\32\2\2\u013e"+
 		"\u013f\5L\'\2\u013f\u0140\7&\2\2\u0140\u0141\5> \2\u0141\u0142\7\'\2\2"+
 		"\u0142\u015a\3\2\2\2\u0143\u0145\7\30\2\2\u0144\u0146\5T+\2\u0145\u0144"+
 		"\3\2\2\2\u0145\u0146\3\2\2\2\u0146\u0147\3\2\2\2\u0147\u015a\7*\2\2\u0148"+
-		"\u014a\7\b\2\2\u0149\u014b\7O\2\2\u014a\u0149\3\2\2\2\u014a\u014b\3\2"+
-		"\2\2\u014b\u014c\3\2\2\2\u014c\u015a\7*\2\2\u014d\u014f\7\f\2\2\u014e"+
+		"\u014a\7\7\2\2\u0149\u014b\7O\2\2\u014a\u0149\3\2\2\2\u014a\u014b\3\2"+
+		"\2\2\u014b\u014c\3\2\2\2\u014c\u015a\7*\2\2\u014d\u014f\7\13\2\2\u014e"+
 		"\u0150\7O\2\2\u014f\u014e\3\2\2\2\u014f\u0150\3\2\2\2\u0150\u0151\3\2"+
 		"\2\2\u0151\u015a\7*\2\2\u0152\u015a\7*\2\2\u0153\u0154\5P)\2\u0154\u0155"+
 		"\7*\2\2\u0155\u015a\3\2\2\2\u0156\u0157\7O\2\2\u0157\u0158\7\63\2\2\u0158"+
@@ -4704,8 +4711,8 @@ public class BlufferParser extends Parser {
 		"\3\2\2\2\u0166\u0167\3\2\2\2\u0167\u0165\3\2\2\2\u0167\u0168\3\2\2\2\u0168"+
 		"\u016c\3\2\2\2\u0169\u016b\5\64\33\2\u016a\u0169\3\2\2\2\u016b\u016e\3"+
 		"\2\2\2\u016c\u016a\3\2\2\2\u016c\u016d\3\2\2\2\u016dA\3\2\2\2\u016e\u016c"+
-		"\3\2\2\2\u016f\u0170\7\n\2\2\u0170\u0171\5R*\2\u0171\u0172\7\63\2\2\u0172"+
-		"\u0176\3\2\2\2\u0173\u0174\7\r\2\2\u0174\u0176\7\63\2\2\u0175\u016f\3"+
+		"\3\2\2\2\u016f\u0170\7\t\2\2\u0170\u0171\5R*\2\u0171\u0172\7\63\2\2\u0172"+
+		"\u0176\3\2\2\2\u0173\u0174\7\f\2\2\u0174\u0176\7\63\2\2\u0175\u016f\3"+
 		"\2\2\2\u0175\u0173\3\2\2\2\u0176C\3\2\2\2\u0177\u0184\5H%\2\u0178\u017a"+
 		"\5F$\2\u0179\u0178\3\2\2\2\u0179\u017a\3\2\2\2\u017a\u017b\3\2\2\2\u017b"+
 		"\u017d\7*\2\2\u017c\u017e\5T+\2\u017d\u017c\3\2\2\2\u017d\u017e\3\2\2"+
@@ -4767,7 +4774,7 @@ public class BlufferParser extends Parser {
 		"\2\u0230\u0232\5T+\2\u0231\u022f\3\2\2\2\u0231\u0230\3\2\2\2\u0232\u0233"+
 		"\3\2\2\2\u0233\u0234\7%\2\2\u0234\u0235\5t;\2\u0235\u0237\3\2\2\2\u0236"+
 		"\u0229\3\2\2\2\u0236\u022e\3\2\2\2\u0237w\3\2\2\2\u0238\u024c\5L\'\2\u0239"+
-		"\u023b\7\5\2\2\u023a\u023c\5\u0084C\2\u023b\u023a\3\2\2\2\u023b\u023c"+
+		"\u023b\7\4\2\2\u023a\u023c\5\u0084C\2\u023b\u023a\3\2\2\2\u023b\u023c"+
 		"\3\2\2\2\u023c\u024c\3\2\2\2\u023d\u024c\5\60\31\2\u023e\u023f\7\27\2"+
 		"\2\u023f\u024c\5|?\2\u0240\u0245\7O\2\2\u0241\u0242\7,\2\2\u0242\u0244"+
 		"\7O\2\2\u0243\u0241\3\2\2\2\u0244\u0247\3\2\2\2\u0245\u0243\3\2\2\2\u0245"+
@@ -4776,9 +4783,9 @@ public class BlufferParser extends Parser {
 		"\u0238\3\2\2\2\u024b\u0239\3\2\2\2\u024b\u023d\3\2\2\2\u024b\u023e\3\2"+
 		"\2\2\u024b\u0240\3\2\2\2\u024cy\3\2\2\2\u024d\u024e\7(\2\2\u024e\u0250"+
 		"\7)\2\2\u024f\u024d\3\2\2\2\u0250\u0251\3\2\2\2\u0251\u024f\3\2\2\2\u0251"+
-		"\u0252\3\2\2\2\u0252\u0253\3\2\2\2\u0253\u0254\7,\2\2\u0254\u0260\7\6"+
+		"\u0252\3\2\2\2\u0252\u0253\3\2\2\2\u0253\u0254\7,\2\2\u0254\u0260\7\5"+
 		"\2\2\u0255\u0256\7(\2\2\u0256\u0257\5T+\2\u0257\u0258\7)\2\2\u0258\u0260"+
-		"\3\2\2\2\u0259\u0260\5\u0084C\2\u025a\u025b\7,\2\2\u025b\u0260\7\5\2\2"+
+		"\3\2\2\2\u0259\u0260\5\u0084C\2\u025a\u025b\7,\2\2\u025b\u0260\7\4\2\2"+
 		"\u025c\u025d\7,\2\2\u025d\u025e\7\27\2\2\u025e\u0260\5|?\2\u025f\u024f"+
 		"\3\2\2\2\u025f\u0255\3\2\2\2\u025f\u0259\3\2\2\2\u025f\u025a\3\2\2\2\u025f"+
 		"\u025c\3\2\2\2\u0260{\3\2\2\2\u0261\u0262\5~@\2\u0262\u0263\5\u0080A\2"+

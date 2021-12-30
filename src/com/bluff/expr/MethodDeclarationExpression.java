@@ -23,6 +23,7 @@ public class MethodDeclarationExpression extends Expression{
         this.arguments = arguments;
         this.methodBody = methodBody;
         this.symbolTable=table;
+        
     }
     
     @Override

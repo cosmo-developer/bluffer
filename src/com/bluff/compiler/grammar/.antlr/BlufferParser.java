@@ -1127,6 +1127,7 @@ public class BlufferParser extends Parser {
 		public TerminalNode LONG() { return getToken(BlufferParser.LONG, 0); }
 		public TerminalNode FLOAT() { return getToken(BlufferParser.FLOAT, 0); }
 		public TerminalNode DOUBLE() { return getToken(BlufferParser.DOUBLE, 0); }
+                public TerminalNode STRING() {return getToken(BlufferParser.StringLiteral,0);}
 		public PrimitiveTypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
