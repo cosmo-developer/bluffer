@@ -31,9 +31,14 @@ primitiveType
     | 'string'
 ;
 
+primitiveOrArray
+:
+	(declVar|declareArray)
+;
+
 parameters
 :
-	(type|arrayType) Identifier (',' (type|arrayType) Identifier)*
+	primitiveOrArray (',' primitiveOrArray)*
 ;
 
 block
