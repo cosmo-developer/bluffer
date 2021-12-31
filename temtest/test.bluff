@@ -25,7 +25,7 @@ void main() {
 	println(fff);
 	
 	fff  = max(f,ff);  
-	println(fff); 
+	println(fff);
 
     string s = "All students got the highest grade A!";
 	int res = countA(s);

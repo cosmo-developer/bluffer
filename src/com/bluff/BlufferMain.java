@@ -1,9 +1,8 @@
 package com.bluff;
 
-import com.bluff.compiler.phases.BlufferLexer;
-import com.bluff.compiler.phases.BlufferParser;
-import com.bluff.expr.AntlrToExpression;
-import com.bluff.expr.AntlrToProgramBody;
+import com.bluff.compiler.phases.AvagadroLexer;
+import com.bluff.compiler.phases.AvagadroParser;
+import java.util.List;
 import org.antlr.v4.Tool;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
@@ -16,7 +15,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 public class BlufferMain {
 
     static void gen(){
-        Tool.main(new String[]{"src/com/bluff/compiler/grammar/Bluffer.g4"
+        Tool.main(new String[]{"src/com/bluff/compiler/grammar/Avagadro.g4"
                 ,"-o","src/com/bluff/compiler/phases"
                 ,"-package","com.bluff.compiler.phases","-visitor","-no-listener"});
     }
@@ -27,16 +26,18 @@ public class BlufferMain {
     public static void main(String[] args) throws Exception {
 //        gen();
         CharStream stream = CharStreams.fromFileName("test.java");
-        BlufferLexer lexer = new BlufferLexer(stream);
+        AvagadroLexer lexer = new AvagadroLexer(stream);
         CommonTokenStream cts = new CommonTokenStream(lexer);
-        BlufferParser parser = new BlufferParser(cts);
-        BlufferParser.ProgramBodyContext programBody = parser.programBody();
-        AntlrToExpression expression=new AntlrToExpression();
-        AntlrToProgramBody body=new AntlrToProgramBody(expression);
-        body.visit(programBody);
-        expression.globalSymbolTable.symbols.entrySet().forEach((k) -> {
-            SymbolTable.Symbol symbol = expression.globalSymbolTable.getSymbol(k.getValue().id);
-            System.out.println(symbol);
-        });
+        AvagadroParser parser = new AvagadroParser(cts);
+        List<AvagadroParser.MethodDeclarationContext> list=parser.statementList().methodDeclaration();
+        AvagadroParser.MethodDeclarationContext get = list.get(0);
+        AvagadroParser.BlockContext block = get.block();
+        AvagadroParser.StatementContext statement = block.statement(0);
+        System.out.println(statement.createConstantNewArray().expression());
+        
+//        AntlrToExpression expression=new AntlrToExpression();
+//        AntlrToProgramBody body=new AntlrToProgramBody(expression);
+//        body.visit(programBody);
+        
     }
 }

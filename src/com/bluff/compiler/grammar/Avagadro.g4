@@ -1,5 +1,5 @@
 
-grammar Bluffer;
+grammar Avagadro;
 
 statementList
 :
@@ -28,7 +28,6 @@ primitiveType
 	|'float'
 	|'char'
 	|'int'
-    | 'string'
 ;
 
 parameters
@@ -47,28 +46,15 @@ block
 
 statement
 :
-
-    ';'
-    | block
-    |declVarInitialize ';'
+    declVarInitialize ';'
     | declareAndCreateNewArray ';'
-	| declareArrayAndAssign ';'
     | declareAndCreateArrayConstant ';'
 	| declareArray ';'
-    | methodCall ';'
     |declVar ';'
     |'if' parExpression statement ('else' statement)?
-    | 'while' parExpression  statement
-    | 'return' (';'|expression ';')
-	| assignment ';'
+    | 'while' parExpression statement
+
 ;
-
-assignment
-:
-    Identifier ('[' expression ']')? '=' expression
-;
-
-
 
 declVarInitialize
 :
@@ -89,11 +75,6 @@ declareArray
 declareAndCreateArrayConstant
 :
     arrayType Identifier '=' '{' (expression (',' expression)* (',')? )? '}' 
-;
-
-declareArrayAndAssign
-:
-	arrayType Identifier '=' expression
 ;
 
 declVar
@@ -133,15 +114,15 @@ factor
 :
 	'-' factor
 	|'+' factor
-    | methodCall selector?
 	| parExpression
+	| methodCall selector?
 	| literal
 	| Identifier selector?
 ;
 
 selector
 :
-	'.' Identifier
+	'.length'
 	|'[' expression ']'
 ;
 
@@ -181,6 +162,7 @@ NEW : 'new';
 RETURN : 'return';
 VOID : 'void';
 WHILE : 'while';
+LENGTH : 'length';
 
 // §3.10.1 Integer Literals
 
