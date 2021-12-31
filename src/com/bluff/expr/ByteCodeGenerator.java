@@ -11,29 +11,6 @@ package com.bluff.expr;
  */
 public class ByteCodeGenerator {
     
-    Object visit(MemberDeclarationExpression aThis) {
-        
-        return null;
-    }
-    Object visit(MethodDeclarationExpression aThis){
-        
-        return null;
-    }
-
-    Object visit(TypeExpression aThis) {
-        return aThis.type;
-    }
-
-    Object visit(FieldDeclarationExpression aThis) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    Object visit(VariableDeclarationExpression aThis) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    Object visit(ArrayInitializer aThis) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    
 
 }
