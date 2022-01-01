@@ -113,10 +113,9 @@ public class SymbolTableIT {
     public void testAddSymbol() {
         System.out.println("addSymbol");
         Token id = new SampleTestToken("id",1,1,1);
-        SymbolTable.Type type = SymbolTable.Type.BOOL;
         String extra = "";
         SymbolTable instance = new SymbolTable(null);
-        assertTrue("Value should be true",instance.addSymbol(id, type, extra)==true);
+        assertTrue("Value should be true",instance.addSymbol(id, "", extra)==true);
         
     }
 

@@ -5,25 +5,26 @@
  */
 package com.bluff.expr;
 
+import com.bluff.compiler.phases.ByteCodeGenerator;
 import java.util.ArrayList;
-import org.antlr.v4.runtime.Token;
 
 /**
  *
  * @author Sonu Aryan <cosmo-developer@github.com>
  */
-public class VariableDeclarationExpression extends Expression{
-    public final ArrayList<Token> identifiers;
-    public final ArrayList<Expression> initializers;
-    
-    public VariableDeclarationExpression() {
-        this.identifiers = new ArrayList<>();
-        this.initializers = new ArrayList<>();
+public class RelExpression extends Expression {
+
+    public final ArrayList<Expression> exps;
+    public final ArrayList<String> operators;
+
+    public RelExpression(ArrayList<Expression> exps, ArrayList<String> operators) {
+        this.exps = exps;
+        this.operators = operators;
     }
 
     @Override
     public Object accept(ByteCodeGenerator generator) {
         return generator.visit(this);
     }
-    
+
 }

@@ -1,409 +1,184 @@
 
 grammar Bluffer;
 
-@headers{
-}
-
-@members{
-    
-}
-
-programBody
-    :    
-        programBodyDeclaration*
-    ;
-
-programBodyDeclaration
-    :   ';'
-    |   memberDecl
-    ;
-    
-memberDecl
-    :    memberDeclaration
-    |   'void' Identifier voidMethodDeclaratorRest
-    ;
-	
-	
-memberDeclaration
-    :   type (methodDeclaration | fieldDeclaration)
-    ;
+statementList
+:
+    ';'
+	|methodDeclaration*
+;
 
 methodDeclaration
-    :   Identifier methodDeclaratorRest
-    ;
-
-fieldDeclaration
-    :   variableDeclarators ';'
-    ;
-    
-methodDeclaratorRest
-    :   formalParameters ('[' ']')*
-        (   methodBody
-        |   ';'
-        )
-    ;
-    
-voidMethodDeclaratorRest
-    :   formalParameters
-        (   methodBody
-        |   ';'
-        )
-    ;
-
-
-constantDeclarator
-    :   Identifier constantDeclaratorRest
-    ;
-    
-variableDeclarators
-    :   variableDeclarator (',' variableDeclarator)*
-    ;
-
-variableDeclarator
-    :   variableDeclaratorId ('=' variableInitializer)?
-    ;
-    
-constantDeclaratorsRest
-    :   constantDeclaratorRest (',' constantDeclarator)*
-    ;
-
-constantDeclaratorRest
-    :   ('[' ']')* '=' variableInitializer
-    ;
-    
-variableDeclaratorId
-    :   Identifier ('[' ']')*
-    ;
-
-variableInitializer
-    :   arrayInitializer
-    |   expression
-    ;
-        
-arrayInitializer
-    :   '{' (variableInitializer (',' variableInitializer)* (',')? )? '}'
-    ;
-
-modifier
-    :   
-           ('final')
-    ;
+:
+    ('void'|(type|arrayType)) Identifier '(' parameters? ')' block
+;
 
 type
-	:primitiveType ('[' ']')*
-	;
+:
+     primitiveType
+;
 
+arrayType
+:
+    ('float'|'char'|'int') ('[' ']')
+;
 
 primitiveType
-    :  'bool'
-    |   'char'
-    |   'byte'
-    |   'short'
-    |   'int'
-    |   'long'
-    |   'float'
-    |   'double'
-	|	'string'
-    ;
+:
+    'bool'
+	|'float'
+	|'char'
+	|'int'
+    | 'string'
+;
 
-
-formalParameters
-    :   '(' formalParameterDecls? ')'
-    ;
-    
-formalParameterDecls
-    :    type formalParameterDeclsRest
-    ;
-    
-formalParameterDeclsRest
-    :   variableDeclaratorId (',' formalParameterDecls)?
-    |   '...' variableDeclaratorId
-    ;
-    
-methodBody
-    :   block
-    ;
-    
-literal 
-    :   IntegerLiteral
-    |   FloatingPointLiteral
-    |   CharacterLiteral
-    |   StringLiteral
-    |   BooleanLiteral
-    |   'null'
-    ;
-
-
-
-// STATEMENTS / BLOCKS
+parameters
+:
+	(type|arrayType) Identifier (',' (type|arrayType) Identifier)*
+;
 
 block
-    :   '{' blockStatement* '}'
-    ;
-    
-blockStatement
-    :   localVariableDeclarationStatement
-    |   statement
-    ;
-    
-localVariableDeclarationStatement
-    :    localVariableDeclaration ';'
-    ;
+:
+    '{'
+        statement*
+    '}'
+;
 
-localVariableDeclaration
-    :   type variableDeclarators
-    ;
-    
+
 
 statement
-    :	block
-   // |   ASSERT expression (':' expression)? ';'
-    |   'if' parExpression statement ('else' statement)?
-    |   'for' '(' forControl ')' statement
-    |   'while' parExpression statement
-    |   'do' statement 'while' parExpression ';'
-    |   'switch' parExpression '{' switchBlockStatementGroups '}'
-    |   'return' expression? ';'
-    |   'break' Identifier? ';'
-    |   'continue' Identifier? ';'
-    |   ';' 
-    |   statementExpression ';'
-    |   Identifier ':' statement
-    ;
+:
 
-formalParameter
-    :   type variableDeclaratorId
-    ;
-        
-switchBlockStatementGroups
-    :   (switchBlockStatementGroup)*
-    ;
-    
-/* The change here (switchLabel -> switchLabel+) technically makes this grammar
-   ambiguous; but with appropriately greedy parsing it yields the most
-   appropriate AST, one in which each group, except possibly the last one, has
-   labels and statements. */
-switchBlockStatementGroup
-    :   switchLabel+ blockStatement*
-    ;
-    
-switchLabel
-    :   'case' constantExpression ':'
-    |   'default' ':'
-    ;
-    
-forControl
-    :   enhancedForControl
-    |   forInit? ';' expression? ';' forUpdate?
-    ;
+    ';'
+    | block
+    |declVarInitialize ';'
+    | declareAndCreateNewArray ';'
+	| declareArrayAndAssign ';'
+    | declareAndCreateArrayConstant ';'
+	| declareArray ';'
+    | methodCall ';'
+    |declVar ';'
+    |'if' parExpression statement ('else' statement)?
+    | 'while' parExpression  statement
+    | 'return' (';'|expression ';')
+	| assignment ';'
+;
 
-forInit
-    :   localVariableDeclaration
-    |   expressionList
-    ;
-    
-enhancedForControl
-    :    type Identifier ':' expression
-    ;
+assignment
+:
+    Identifier ('[' expression ']')? '=' expression
+;
 
-forUpdate
-    :   expressionList
-    ;
 
-// EXPRESSIONS
+
+declVarInitialize
+:
+    type Identifier '=' expression 
+;
+
+
+declareAndCreateNewArray
+:
+    arrayType Identifier '=' 'new' ('float'|'char'|'int') ('[' expression ']') 
+;
+
+declareArray
+:
+	arrayType Identifier
+;
+
+declareAndCreateArrayConstant
+:
+    arrayType Identifier '=' '{' (expression (',' expression)* (',')? )? '}' 
+;
+
+declareArrayAndAssign
+:
+	arrayType Identifier '=' expression
+;
+
+declVar
+:
+    primitiveType Identifier
+;
 
 parExpression
-    :   '(' expression ')'
-    ;
-    
-expressionList
-    :   expression (',' expression)*
-    ;
+:'(' expression ')';
 
-statementExpression
-    :   expression
-    ;
-    
-constantExpression
-    :   expression
-    ;
-    
 expression
-    :   conditionalExpression (assignmentOperator expression)?
-    ;
-    
-assignmentOperator
-    :   '='
-    |   '+='
-    |   '-='
-    |   '*='
-    |   '/='
-    |   '&='
-    |   '|='
-    |   '^='
-    |   '%='
-    |   '<<='
-    |   '>>='
-    |   '>>>='
-    ;
+:
+    equExp
+;
 
-conditionalExpression
-    :   conditionalOrExpression ( '?' expression ':' conditionalExpression )?
-    ;
+equExp
+:
+	relExp (('!='|'==') relExp)*
+;
 
-conditionalOrExpression
-    :   conditionalAndExpression ( '||' conditionalAndExpression )*
-    ;
+relExp
+:
+	addExp (('<'|'>'|'>='|'<=') addExp)*
+;
 
-conditionalAndExpression
-    :   inclusiveOrExpression ( '&&' inclusiveOrExpression )*
-    ;
+addExp
+:
+	term (('+'|'-') term)*
+;
 
-inclusiveOrExpression
-    :   exclusiveOrExpression ( '|' exclusiveOrExpression )*
-    ;
+term
+:
+	factor (('*'|'/'|'%') factor)*
+;
 
-exclusiveOrExpression
-    :   andExpression ( '^' andExpression )*
-    ;
-
-andExpression
-    :   equalityExpression ( '&' equalityExpression )*
-    ;
-
-equalityExpression
-    :   relationalExpression ( ('==' | '!=') relationalExpression )*
-    ;
-
-
-relationalExpression
-    :   shiftExpression ( relationalOp shiftExpression )*
-    ;
-    
-relationalOp
-    :   '<='
-    |   '>='
-    |   '<'
-    |   '>'
-    ;
-
-shiftExpression
-    :   additiveExpression ( shiftOp additiveExpression )*
-    ;
-
-shiftOp
-    :   t1='<' t2='<'
-//        { $t1.getLine() == $t2.getLine() &&
-//          $t1.getCharPositionInLine() + 1 == $t2.getCharPositionInLine() }?
-    |   t1='>' t2='>' t3='>'
-//        { $t1.getLine() == $t2.getLine() &&
-//          $t1.getCharPositionInLine() + 1 == $t2.getCharPositionInLine() &&
-//          $t2.getLine() == $t3.getLine() &&
-//          $t2.getCharPositionInLine() + 1 == $t3.getCharPositionInLine() }?
-    |   t1='>' t2='>'
-//        { $t1.getLine() == $t2.getLine() &&
-//          $t1.getCharPositionInLine() + 1 == $t2.getCharPositionInLine() }?
-    ;
-
-
-additiveExpression
-    :   multiplicativeExpression ( ('+' | '-') multiplicativeExpression )*
-    ;
-
-multiplicativeExpression
-    :   unaryExpression ( ( '*' | '/' | '%' ) unaryExpression )*
-    ;
-    
-unaryExpression
-    :   '+' unaryExpression
-    |   '-' unaryExpression
-    |   '++' unaryExpression
-    |   '--' unaryExpression
-    |   unaryExpressionNotPlusMinus
-    ;
-
-unaryExpressionNotPlusMinus
-    :   '~' unaryExpression
-    |   '!' unaryExpression
-    |   castExpression
-    |   primary selector* ('++'|'--')?
-    ;
-
-castExpression
-    :  '(' primitiveType ')' unaryExpression
-    |  '(' (type | expression) ')' unaryExpressionNotPlusMinus
-    ;
-
-primary
-    :   parExpression
-    |   'this' arguments?
-    |   literal
-    |   'new' creator
-    |   Identifier ('.' Identifier)* identifierSuffix?
-    ;
-
-identifierSuffix
-    :   ('[' ']')+ '.' 'class'
-    |   '[' expression ']'
-    |   arguments
-    |   '.' 'this'
-    |   '.' 'new' creator
-    ;
-
-creator
-    :   createdName (arrayCreatorRest)
-    ;
-
-createdName
-    :   Identifier ('.' Identifier)*
-	|	primitiveType
-    ;
-
-arrayCreatorRest
-    :   '['
-        (   ']' ('[' ']')* arrayInitializer
-        |   expression ']' ('[' expression ']')* ('[' ']')*
-        )
-    ;
-
-
+factor
+:
+	'-' factor
+	|'+' factor
+    | methodCall selector?
+	| parExpression
+	| literal
+	| Identifier selector?
+;
 
 selector
-    :   '.' Identifier arguments?
-    |   '.' 'new' creator
-    |   '[' expression ']'
-    ;
+:
+	'.' Identifier
+	|'[' expression ']'
+;
 
+methodCall
+:
+	Identifier arguments
+;
 
 arguments
-    :   '(' expressionList? ')'
-    ;
+:
+	'(' (expression (',' expression)*)? ')'
+;
+
+literal
+:
+	FloatingPointLiteral
+	|CharacterLiteral
+	|BooleanLiteral
+	|StringLiteral
+	|IntegerLiteral
+;
+
+
 
 // LEXER
 
 // §3.9 Keywords
 
-BOOLEAN : 'boolean';
-BREAK : 'break';
-BYTE : 'byte';
-CASE : 'case';
+BOOLEAN : 'bool';
 CHAR : 'char';
-CONTINUE : 'continue';
-DEFAULT : 'default';
-DO : 'do';
-DOUBLE : 'double';
 ELSE : 'else';
-FINAL : 'final';
 FLOAT : 'float';
-FOR : 'for';
 IF : 'if';
 INT : 'int';
-LONG : 'long';
+STRING: 'string';
 NEW : 'new';
 RETURN : 'return';
-SHORT : 'short';
-SWITCH : 'switch';
-TRANSIENT : 'transient';
 VOID : 'void';
 WHILE : 'while';
 
@@ -561,7 +336,6 @@ BinaryDigitOrUnderscore
 
 FloatingPointLiteral
 	:	DecimalFloatingPointLiteral
-	|	HexadecimalFloatingPointLiteral
 	;
 
 fragment
@@ -597,28 +371,12 @@ FloatTypeSuffix
 	:	[fFdD]
 	;
 
-fragment
-HexadecimalFloatingPointLiteral
-	:	HexSignificand BinaryExponent FloatTypeSuffix?
-	;
 
 fragment
 HexSignificand
 	:	HexNumeral '.'?
 	|	'0' [xX] HexDigits? '.' HexDigits
 	;
-
-fragment
-BinaryExponent
-	:	BinaryExponentIndicator SignedInteger
-	;
-
-fragment
-BinaryExponentIndicator
-	:	[pP]
-	;
-
-// §3.10.3 Boolean Literals
 
 BooleanLiteral
 	:	'true'
@@ -697,38 +455,16 @@ DOT : '.';
 ASSIGN : '=';
 GT : '>';
 LT : '<';
-BANG : '!';
-TILDE : '~';
-QUESTION : '?';
-COLON : ':';
 EQUAL : '==';
 LE : '<=';
 GE : '>=';
 NOTEQUAL : '!=';
-AND : '&&';
-OR : '||';
-INC : '++';
-DEC : '--';
 ADD : '+';
 SUB : '-';
 MUL : '*';
 DIV : '/';
-BITAND : '&';
-BITOR : '|';
-CARET : '^';
 MOD : '%';
 
-ADD_ASSIGN : '+=';
-SUB_ASSIGN : '-=';
-MUL_ASSIGN : '*=';
-DIV_ASSIGN : '/=';
-AND_ASSIGN : '&=';
-OR_ASSIGN : '|=';
-XOR_ASSIGN : '^=';
-MOD_ASSIGN : '%=';
-LSHIFT_ASSIGN : '<<=';
-RSHIFT_ASSIGN : '>>=';
-URSHIFT_ASSIGN : '>>>=';
 
 // §3.8 Identifiers (must appear after all keywords in the grammar)
 
@@ -761,9 +497,6 @@ JavaLetterOrDigit
 //
 // Additional symbols not defined in the lexical specification
 //
-
-AT : '@';
-ELLIPSIS : '...';
 
 //
 // Whitespace and comments

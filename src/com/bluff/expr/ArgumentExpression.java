@@ -5,19 +5,19 @@
  */
 package com.bluff.expr;
 
+import com.bluff.compiler.phases.ByteCodeGenerator;
 import java.util.ArrayList;
 
 /**
  *
  * @author Sonu Aryan <cosmo-developer@github.com>
  */
-public class ArrayInitializer extends Expression{
-    public final ArrayList<Expression> initializers;
-
-    public ArrayInitializer(ArrayList<Expression> initializers) {
-        this.initializers = initializers;
+public class ArgumentExpression extends Expression{
+    public final ArrayList<Expression> arguments;
+    public ArgumentExpression(ArrayList<Expression> arguments) {
+        this.arguments = arguments;
     }
-
+    
     @Override
     public Object accept(ByteCodeGenerator generator) {
         return generator.visit(this);

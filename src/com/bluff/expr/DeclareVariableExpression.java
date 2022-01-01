@@ -5,19 +5,22 @@
  */
 package com.bluff.expr;
 
+import com.bluff.compiler.phases.ByteCodeGenerator;
+import org.antlr.v4.runtime.Token;
+
 /**
  *
  * @author Sonu Aryan <cosmo-developer@github.com>
  */
-public class MemberDeclarationExpression extends Expression{
-    public final Expression typeExpression;
-    public final Expression declExpr;
-    
-    public MemberDeclarationExpression(Expression typeExpression,Expression declExpr) {
-        this.typeExpression=typeExpression;
-        this.declExpr = declExpr;
-    }
+public class DeclareVariableExpression extends Expression{
+    public final String primitiveType;
+    public final Token identifier;
 
+    public DeclareVariableExpression(String primitiveType, Token identifier) {
+        this.primitiveType = primitiveType;
+        this.identifier = identifier;
+    }
+    
     @Override
     public Object accept(ByteCodeGenerator generator) {
         return generator.visit(this);

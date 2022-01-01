@@ -2,7 +2,9 @@ package com.bluff;
 
 import com.bluff.compiler.phases.BlufferLexer;
 import com.bluff.compiler.phases.BlufferParser;
-import com.bluff.expr.AntlrToExpression;
+import com.bluff.compiler.phases.ByteCodeGenerator;
+import com.bluff.compiler.phases.ExpressionBuilder;
+import com.bluff.expr.Expression;
 import org.antlr.v4.Tool;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
@@ -24,14 +26,16 @@ public class BlufferMain {
      * @throws java.lang.Exception
      */
     public static void main(String[] args) throws Exception {
+//        gen();
         CharStream stream = CharStreams.fromFileName("test.java");
-        BlufferLexer lexer = new BlufferLexer(stream);
-        CommonTokenStream cts = new CommonTokenStream(lexer);
-        BlufferParser parser = new BlufferParser(cts);
-        BlufferParser.ProgramBodyContext programBody = parser.programBody();
-        AntlrToExpression expression=new AntlrToExpression();
-        programBody.programBodyDeclaration().forEach((ctx) -> {
-        });
-        
+        BlufferLexer lexer=new BlufferLexer(stream);
+        CommonTokenStream token=new CommonTokenStream(lexer);
+        BlufferParser parser=new BlufferParser(token);
+        BlufferParser.StatementListContext statementList = parser.statementList();
+        ExpressionBuilder builder=new ExpressionBuilder();
+        Expression visit = builder.visit(statementList);
+        ByteCodeGenerator generator=new ByteCodeGenerator();
+        SymbolTable curr = builder.curr();
+        System.out.println(curr.symbols);
     }
 }

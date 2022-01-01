@@ -5,18 +5,20 @@
  */
 package com.bluff.expr;
 
-import org.antlr.v4.runtime.Token;
+import com.bluff.compiler.phases.ByteCodeGenerator;
+import java.util.ArrayList;
 
 /**
  *
  * @author Sonu Aryan <cosmo-developer@github.com>
  */
-public class FieldDeclarationExpression extends Expression{
-    public final Token identifier;
-    public final Expression initializer;
-    public FieldDeclarationExpression(Token identifier, Expression initializer) {
-        this.identifier = identifier;
-        this.initializer = initializer;
+public class TermExpression extends Expression{
+    public final ArrayList<Expression> exps;
+    public final ArrayList<String> operators;
+
+    public TermExpression(ArrayList<Expression> exps, ArrayList<String> operators) {
+        this.exps = exps;
+        this.operators = operators;
     }
     
     @Override

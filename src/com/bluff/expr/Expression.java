@@ -5,6 +5,8 @@
  */
 package com.bluff.expr;
 
+import com.bluff.compiler.phases.ByteCodeGenerator;
+
 /**
  *
  * @author Sonu Aryan <cosmo-developer@github.com>
