@@ -125,11 +125,23 @@ public interface BlufferVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitEquExp(BlufferParser.EquExpContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link BlufferParser#equSymbol}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEquSymbol(BlufferParser.EquSymbolContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link BlufferParser#relExp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitRelExp(BlufferParser.RelExpContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BlufferParser#relSymbol}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRelSymbol(BlufferParser.RelSymbolContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link BlufferParser#addExp}.
 	 * @param ctx the parse tree
@@ -137,11 +149,23 @@ public interface BlufferVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAddExp(BlufferParser.AddExpContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link BlufferParser#addSymbol}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAddSymbol(BlufferParser.AddSymbolContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link BlufferParser#term}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitTerm(BlufferParser.TermContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BlufferParser#termSymbol}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTermSymbol(BlufferParser.TermSymbolContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link BlufferParser#factor}.
 	 * @param ctx the parse tree

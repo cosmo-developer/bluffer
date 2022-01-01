@@ -15,7 +15,8 @@ import org.antlr.v4.runtime.Token;
 public class MethodCallExpression extends Expression{
     public final Token identifier;
     public final ArgumentExpression args;
-
+    public boolean lengthSelector=false;
+    public Expression arraySelector=null;
     public MethodCallExpression(Token identifier, ArgumentExpression args) {
         this.identifier = identifier;
         this.args = args;

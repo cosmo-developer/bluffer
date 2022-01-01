@@ -116,32 +116,51 @@ expression
 
 equExp
 :
-	relExp (('!='|'==') relExp)*
+	relExp (equSymbol relExp)*
+;
+equSymbol
+:
+	'!='|'=='
 ;
 
 relExp
 :
-	addExp (('<'|'>'|'>='|'<=') addExp)*
+	addExp (relSymbol addExp)*
+;
+
+relSymbol
+:
+	'<'|'>'|'>='|'<='
 ;
 
 addExp
 :
-	term (('+'|'-') term)*
+	term (addSymbol term)*
+;
+
+addSymbol
+:
+	'+'|'-'
 ;
 
 term
 :
-	factor (('*'|'/'|'%') factor)*
+	factor (termSymbol factor)*
+;
+
+termSymbol
+:
+	'*'|'/'|'%'
 ;
 
 factor
 :
 	'-' factor
 	|'+' factor
-    | methodCall selector?
-	| parExpression
+    | methodCall (selector)?
+	| parExpression (selector)?
 	| literal
-	| Identifier selector?
+	| Identifier (selector)?
 ;
 
 selector

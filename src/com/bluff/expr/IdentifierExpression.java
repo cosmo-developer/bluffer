@@ -12,24 +12,18 @@ import org.antlr.v4.runtime.Token;
  *
  * @author Sonu Aryan <cosmo-developer@github.com>
  */
-public class DeclareAndCreateNewArrayExpression extends Expression{
-    
-    public final String arrayType;
+public class IdentifierExpression extends Expression{
     public final Token identifier;
-    public final String creatorType;
-    public final Expression size;
+    public boolean lengthSelector=false;
+    public Expression arraySelector=null;
 
-    public DeclareAndCreateNewArrayExpression(String arrayType, 
-            Token identifier, String creatorType, Expression size) {
-        this.arrayType = arrayType;
+    public IdentifierExpression(Token identifier) {
         this.identifier = identifier;
-        this.creatorType = creatorType;
-        this.size = size;
     }
-    
+
     @Override
     public Object accept(ByteCodeGenerator generator) {
-        return generator.visit(this);
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

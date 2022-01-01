@@ -6,6 +6,7 @@
 package com.bluff.expr;
 
 import com.bluff.compiler.phases.ByteCodeGenerator;
+import org.antlr.v4.runtime.Token;
 
 /**
  *
@@ -16,11 +17,15 @@ public class FactorExpression extends Expression{
     public final Expression anyOne;
     public final boolean lengthSelector;
     public final Expression arraySelctor;
-    public FactorExpression(String unaryOperator, Expression anyOne,boolean lengthSelector,Expression arraySelector) {
+    public final Token identifier;
+    public FactorExpression(String unaryOperator, 
+            Expression anyOne,boolean lengthSelector,
+            Expression arraySelector,Token identifier) {
         this.unaryOperator = unaryOperator;
         this.anyOne = anyOne;
         this.lengthSelector=lengthSelector;
         this.arraySelctor=arraySelector;
+        this.identifier=identifier;
     }
     @Override
     public Object accept(ByteCodeGenerator generator) {

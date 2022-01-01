@@ -35,6 +35,7 @@ public class BlufferMain {
         ExpressionBuilder builder=new ExpressionBuilder();
         Expression visit = builder.visit(statementList);
         ByteCodeGenerator generator=new ByteCodeGenerator();
-        generator.visit(visit);
+        SymbolTable curr = builder.curr();
+        System.out.println(curr.symbols);
     }
 }

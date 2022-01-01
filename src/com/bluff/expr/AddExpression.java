@@ -6,19 +6,19 @@
 package com.bluff.expr;
 
 import com.bluff.compiler.phases.ByteCodeGenerator;
+import java.util.ArrayList;
 
 /**
  *
  * @author Sonu Aryan <cosmo-developer@github.com>
  */
 public class AddExpression extends Expression{
-    public final TermExpression left;
-    public final String operator;
-    public final TermExpression right;
-    public AddExpression(TermExpression left, String operator, TermExpression right) {
-        this.left = left;
-        this.operator = operator;
-        this.right = right;
+    public final ArrayList<Expression> exps;
+    public final ArrayList<String> operators;
+
+    public AddExpression(ArrayList<Expression> exps, ArrayList<String> operators) {
+        this.exps = exps;
+        this.operators = operators;
     }
     
     @Override

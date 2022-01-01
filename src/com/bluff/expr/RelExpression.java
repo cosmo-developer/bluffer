@@ -6,26 +6,25 @@
 package com.bluff.expr;
 
 import com.bluff.compiler.phases.ByteCodeGenerator;
+import java.util.ArrayList;
 
 /**
  *
  * @author Sonu Aryan <cosmo-developer@github.com>
  */
-public class RelExpression extends Expression{
-    
-    public final AddExpression left;
-    public final String operator;
-    public final AddExpression right;
+public class RelExpression extends Expression {
 
-    public RelExpression(AddExpression left, String operator, AddExpression right) {
-        this.left = left;
-        this.operator = operator;
-        this.right = right;
+    public final ArrayList<Expression> exps;
+    public final ArrayList<String> operators;
+
+    public RelExpression(ArrayList<Expression> exps, ArrayList<String> operators) {
+        this.exps = exps;
+        this.operators = operators;
     }
-    
+
     @Override
     public Object accept(ByteCodeGenerator generator) {
         return generator.visit(this);
     }
-    
+
 }

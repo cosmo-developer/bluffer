@@ -6,24 +6,24 @@
 package com.bluff.expr;
 
 import com.bluff.compiler.phases.ByteCodeGenerator;
-import java.util.ArrayList;
 
 /**
  *
  * @author Sonu Aryan <cosmo-developer@github.com>
  */
-public class TermExpression extends Expression{
-    public final ArrayList<Expression> exps;
-    public final ArrayList<String> operators;
+public class ParExpression extends Expression {
 
-    public TermExpression(ArrayList<Expression> exps, ArrayList<String> operators) {
-        this.exps = exps;
-        this.operators = operators;
+    public final Expression exp;
+    public boolean lengthSelector = false;
+    public Expression arraySelector = null;
+
+    public ParExpression(Expression exp) {
+        this.exp = exp;
     }
-    
+
     @Override
     public Object accept(ByteCodeGenerator generator) {
-        return generator.visit(this);
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }
