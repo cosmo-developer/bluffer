@@ -439,7 +439,7 @@ public class ExpressionBuilder extends BlufferBaseVisitor<Expression> {
         if (ctx.VOID() != null) {
             returnType = "void";
         } else if (ctx.arrayType() != null) {
-            returnType = "[" + ctx.arrayType().start.getText();
+            returnType =   ctx.arrayType().start.getText()+"[]";
         } else if (ctx.type() != null) {
             returnType = ctx.type().primitiveType().start.getText();
         }

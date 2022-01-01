@@ -15,23 +15,26 @@ import org.antlr.v4.runtime.Token;
  * @author Sonu Aryan <cosmo-developer@github.com>
  */
 public class SymbolTable {
+    public int counter=0;
     
     public class Symbol{
         public final Token id;
         public final String type;
         public final Object extra;
-
+        public  int lidx;
         public Symbol(Token id, String type,String extra) {
             this.id = id;
             this.type = type;
             this.extra=extra;
         }
+        void setIdx(int lidx){
+            this.lidx=lidx;
+        }
 
         @Override
         public String toString() {
-            return "Symbol{" + "id=" + id + ", type=" + type + ", extra=" + extra + '}';
+            return "Symbol{" + "id=" + id + ", type=" + type + ", extra=" + extra + ", lidx=" + lidx + '}';
         }
-        
         
     }
     public final SymbolTable parent;
@@ -39,6 +42,7 @@ public class SymbolTable {
     public SymbolTable(SymbolTable parent){
         this.parent=parent;
         this.symbols=new HashMap<>();
+        counter=0;
     }
     public boolean addSymbol(Token id,String type,String extra){
         if (symbols.get(id.getText())!=null){
@@ -50,7 +54,9 @@ public class SymbolTable {
                     );
             return false;
         }
-        this.symbols.put(id.getText(), new Symbol(id,type,extra));
+        Symbol sym=new Symbol(id,type,extra);
+        sym.setIdx(counter++);
+        this.symbols.put(id.getText(), sym);
         return true;
     }
     public Symbol getSymbol(Token id){

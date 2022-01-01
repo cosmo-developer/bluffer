@@ -1,10 +1,9 @@
-int main(){
-	string s="\n";
-	int j=3+4;
-	int jaka=ionized(33,44,55,somewhere()).length;
+void main(){
+	string s="Hello World!";
 }
 
-float[] java(int carva,int sarva){
-	
-	
+void some(int somewhere){
+	string desc="Description is long";
+	string some="helping other not helpful";
+	int jox=33;
 }
