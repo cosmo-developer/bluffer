@@ -10,6 +10,7 @@ import com.bluff.expr.AddExpression;
 import com.bluff.expr.ArgumentExpression;
 import com.bluff.expr.AssignmentExpression;
 import com.bluff.expr.BlockExpression;
+import com.bluff.expr.BooleanLiteralExpression;
 import com.bluff.expr.CharLiteralExpression;
 import com.bluff.expr.DeclVariableInitializedExpression;
 import com.bluff.expr.DeclareAndCreateArrayConstantExpression;
@@ -19,7 +20,6 @@ import com.bluff.expr.DeclareArrayExpression;
 import com.bluff.expr.DeclareVariableExpression;
 import com.bluff.expr.ElseExpression;
 import com.bluff.expr.EquExpression;
-import com.bluff.expr.Expression;
 import com.bluff.expr.FactorExpression;
 import com.bluff.expr.FloatLiteralExpression;
 import com.bluff.expr.IdentifierExpression;
@@ -29,6 +29,7 @@ import com.bluff.expr.MethodCallExpression;
 import com.bluff.expr.MethodDeclarationExpression;
 import com.bluff.expr.ParameterExpression;
 import com.bluff.expr.RelExpression;
+import com.bluff.expr.ReturnExpression;
 import com.bluff.expr.StatementExpression;
 import com.bluff.expr.StatementListExpression;
 import com.bluff.expr.StringLiteralExpression;
@@ -38,6 +39,8 @@ import java.io.BufferedOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.antlr.v4.runtime.Token;
@@ -62,7 +65,7 @@ public class ByteCodeGenerator {
     final int GEN_FLAG = ACC_PUBLIC + ACC_STATIC;
     final String className;
     Label endMark;
-    String currentMethodName="";
+    String currentMethodName = "";
 
     public ByteCodeGenerator(String className, SymbolTable table) {
         cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
@@ -72,12 +75,10 @@ public class ByteCodeGenerator {
         this.endMark = new Label();
     }
 
-    
-    
-    public  int offset(SymbolTable.Symbol sym){
-        if (this.currentMethodName.equals("main")){
-            return sym.lidx+1;
-        }else{
+    public int offset(SymbolTable.Symbol sym) {
+        if (this.currentMethodName.equals("main")) {
+            return sym.lidx + 1;
+        } else {
             return sym.lidx;
         }
     }
@@ -94,13 +95,18 @@ public class ByteCodeGenerator {
         if (anyliteral.charAt(0) == '\'') {
             result = result.replace("\\'", "'");
         }
-        return result;
+        return result.substring(1, result.length() - 1);
     }
 
     public Object visit(StringLiteralExpression se) {
         String escaped = performEscaping(se.value, null, 0, 0, 0);
         this.currentAdapter.push(escaped);
-        return null;
+        return "String";
+    }
+
+    public Object visit(BooleanLiteralExpression be) {
+        this.currentAdapter.push(be.value);
+        return "boolean";
     }
 
     public Object visit(IdentifierExpression ie) {
@@ -109,6 +115,7 @@ public class ByteCodeGenerator {
         if (ie.lengthSelector) {
             this.currentAdapter.loadLocal(this.offset(symbol));
             this.currentAdapter.arrayLength();
+            return "int";
         } else if (ie.arraySelector != null) {
             this.currentAdapter.loadLocal(this.offset(symbol));
             ie.arraySelector.accept(this);
@@ -138,22 +145,22 @@ public class ByteCodeGenerator {
                 this.currentAdapter.loadLocal(this.offset(symbol));
             }
         }
-        return null;
+        return symbol.type.equals("string") ? "String" : symbol.type;
     }
 
     public Object visit(FloatLiteralExpression fe) {
         this.currentAdapter.push(fe.value);
-        return null;
+        return "float";
     }
 
     public Object visit(IntegeralLiteralExpression ie) {
         this.currentAdapter.push(ie.value);
-        return null;
+        return "int";
     }
 
     public Object visit(CharLiteralExpression ce) {
         this.currentAdapter.push((byte) ce.value);
-        return null;
+        return "char";
     }
 
     public Object visit(AddExpression aThis) {
@@ -161,11 +168,20 @@ public class ByteCodeGenerator {
     }
 
     public Object visit(ArgumentExpression aThis) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Object> types = new ArrayList<>();
+        aThis.arguments.forEach((ex) -> {
+            String type = (String) ex.accept(this);
+            types.add(type.equals("bool") ? "boolean" : type.equals("string") ? "String" : type);
+        });
+        return types;
     }
 
     public Object visit(AssignmentExpression aThis) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Token identifier = aThis.identifier;
+        SymbolTable.Symbol symbol = gtable.getSymbol(identifier);
+        aThis.initializer.accept(this);
+        this.currentAdapter.storeArg(this.offset(symbol));
+        return null;
     }
 
     public Object visit(BlockExpression aThis) {
@@ -185,8 +201,7 @@ public class ByteCodeGenerator {
                     this.currentAdapter.storeLocal(this.offset(symbol), Type.INT_TYPE);
                     break;
                 case "string":
-                    int jac=this.currentAdapter.newLocal(Type.getType(String.class));
-                    
+                    this.currentAdapter.newLocal(Type.getType(String.class));
                     this.currentAdapter.storeLocal(this.offset(symbol), Type.getType(String.class));
                     break;
                 case "float":
@@ -197,6 +212,9 @@ public class ByteCodeGenerator {
                     this.currentAdapter.newLocal(Type.CHAR_TYPE);
                     this.currentAdapter.storeLocal(this.offset(symbol), Type.CHAR_TYPE);
                     break;
+                case "bool":
+                    this.currentAdapter.newLocal(Type.BOOLEAN_TYPE);
+                    this.currentAdapter.storeLocal(this.offset(symbol), Type.BOOLEAN_TYPE);
                 default:
                     break;
             }
@@ -241,11 +259,27 @@ public class ByteCodeGenerator {
     }
 
     public Object visit(DeclareArrayExpression aThis) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            throw new Exception("Uninitialized variable:"
+                    + aThis.identifier.getText()
+                    + ",at line:"+aThis.identifier.getLine()+",column:"
+                    +aThis.identifier.getCharPositionInLine());
+        } catch (Exception ex) {
+            Logger.getLogger(ByteCodeGenerator.class.getName()).log(Level.INFO, null, ex);
+        }
+        return null;
     }
 
-    public Object visit(DeclareVariableExpression aThis) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Object visit(DeclareVariableExpression aThis)  {
+        try {
+            throw new Exception("Uninitialized variable:"
+                    + aThis.identifier.getText()
+                    + ",at line:"+aThis.identifier.getLine()+",column:"
+                    +aThis.identifier.getCharPositionInLine());
+        } catch (Exception ex) {
+            Logger.getLogger(ByteCodeGenerator.class.getName()).log(Level.INFO, null, ex);
+        }
+        return null;
     }
 
     public Object visit(ElseExpression aThis) {
@@ -257,7 +291,6 @@ public class ByteCodeGenerator {
     }
 
     public Object visit(FactorExpression aThis) {
-
         return null;
     }
 
@@ -266,7 +299,54 @@ public class ByteCodeGenerator {
     }
 
     public Object visit(MethodCallExpression aThis) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Token identifier = aThis.identifier;
+        if (identifier.getText().equals("println")) {
+            this.currentAdapter.getStatic(Type.getType(System.class), "out", Type.getType(PrintStream.class));
+            ArrayList<Object> accept = (ArrayList<Object>) aThis.args.accept(this);
+            this.currentAdapter.invokeVirtual(Type.getType(PrintStream.class),
+                    Method.getMethod("void println (" + accept.get(0) + ")"));
+            return "int";
+        } else {
+            
+            SymbolTable.Symbol symbol = gtable.getSymbol(aThis.identifier);
+            String[] split = symbol.type.split(";");
+            String argtypes = "";
+            for (int i = 0; i < split.length - 1; i++) {
+                argtypes += split[i];
+                if (i < split.length - 2) {
+                    argtypes += ",";
+                }
+            }
+            argtypes = "(" + argtypes + ")";
+            argtypes = split[split.length - 1].replace("(", "").replace(")", "") + " " + symbol.id.getText() + " " + argtypes;
+            aThis.args.accept(this);
+            Method m = Method.getMethod(argtypes.replace("bool", "boolean").replace("string", "String"));
+            this.currentAdapter.invokeStatic(Type.getType(this.className),
+                    m);
+            if (aThis.lengthSelector){
+                this.currentAdapter.arrayLength();
+                return "int";
+            }else if(aThis.arraySelector!=null){
+                aThis.arraySelector.accept(this);
+                String tip=Type.getType(m.getReturnType().getClassName()
+                        .replace("[", "").replace("]", "")).toString();
+                if (null != tip)switch (tip) {
+                    case "int":
+                        this.currentAdapter.arrayLoad(Type.INT_TYPE);
+                        break;
+                    case "char":
+                        this.currentAdapter.arrayLoad(Type.CHAR_TYPE);
+                        break;
+                    case "float":
+                        this.currentAdapter.arrayLoad(Type.FLOAT_TYPE);
+                        break;
+                    default:
+                        break;
+                }
+                return m.getReturnType().getClassName();
+            }
+            return m.getReturnType().getClassName();
+        }
     }
 
     public Object visit(ParameterExpression aThis) {
@@ -310,7 +390,7 @@ public class ByteCodeGenerator {
     public Object visit(MethodDeclarationExpression aThis) {
         SymbolTable.Symbol symbol = gtable.getSymbol(aThis.identifier);
         if (symbol.id.getText().equals("main") && symbol.type.equals("(void)")) {
-            this.currentMethodName="main";
+            this.currentMethodName = "main";
             //Main Function Generator
             Method m = Method.getMethod("void main (String[])");
             this.currentAdapter = new GeneratorAdapter(GEN_FLAG, m, null, null, cw);
@@ -323,9 +403,8 @@ public class ByteCodeGenerator {
             this.gtable = this.gtable.parent;
             this.currentAdapter.returnValue();
             this.currentAdapter.endMethod();
-            
         } else {
-            this.currentMethodName="";
+            this.currentMethodName = "";
             String[] split = symbol.type.split(";");
             String argtypes = "";
             for (int i = 0; i < split.length - 1; i++) {
@@ -336,7 +415,8 @@ public class ByteCodeGenerator {
             }
             argtypes = "(" + argtypes + ")";
             argtypes = split[split.length - 1].replace("(", "").replace(")", "") + " " + symbol.id.getText() + " " + argtypes;
-            Method m = Method.getMethod(argtypes);
+            Method m = Method.getMethod(argtypes.replace("bool", "boolean").replace("string", "String"));
+
             this.currentAdapter = new GeneratorAdapter(GEN_FLAG, m, null, null, cw);
             this.gtable = aThis.table;
             if (aThis.parameters != null) {
@@ -346,6 +426,16 @@ public class ByteCodeGenerator {
             this.gtable = this.gtable.parent;
             this.currentAdapter.returnValue();
             this.currentAdapter.endMethod();
+        }
+        return null;
+    }
+
+    public Object visit(ReturnExpression aThis) {
+        if (aThis.toReturn != null) {
+            aThis.toReturn.accept(this);
+            this.currentAdapter.returnValue();
+        } else {
+            this.currentAdapter.returnValue();
         }
         return null;
     }
