@@ -62,6 +62,7 @@ public class ByteCodeGenerator {
     final int GEN_FLAG = ACC_PUBLIC + ACC_STATIC;
     final String className;
     Label endMark;
+    String currentMethodName="";
 
     public ByteCodeGenerator(String className, SymbolTable table) {
         cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
@@ -71,60 +72,14 @@ public class ByteCodeGenerator {
         this.endMark = new Label();
     }
 
-    public Object visit(Expression exp) {
-        if (exp instanceof AddExpression) {
-            return this.visit((AddExpression) exp);
-        } else if (exp instanceof AssignmentExpression) {
-            return this.visit((AssignmentExpression) exp);
-        } else if (exp instanceof BlockExpression) {
-            return this.visit((BlockExpression) exp);
-        } else if (exp instanceof DeclareVariableExpression) {
-            return this.visit((DeclareVariableExpression) exp);
-        } else if (exp instanceof DeclVariableInitializedExpression) {
-            return this.visit((DeclVariableInitializedExpression) exp);
-        } else if (exp instanceof DeclareAndCreateArrayConstantExpression) {
-            return this.visit((DeclareAndCreateArrayConstantExpression) exp);
-        } else if (exp instanceof DeclareAndCreateNewArrayExpression) {
-            return this.visit((DeclareAndCreateNewArrayExpression) exp);
-        } else if (exp instanceof DeclareArrayAndAssignExpression) {
-            return this.visit((DeclareArrayAndAssignExpression) exp);
-        } else if (exp instanceof DeclareArrayExpression) {
-            return this.visit((DeclareArrayExpression) exp);
-        } else if (exp instanceof ElseExpression) {
-            return this.visit((ElseExpression) exp);
-        } else if (exp instanceof EquExpression) {
-            return this.visit((EquExpression) exp);
-        } else if (exp instanceof FactorExpression) {
-            return this.visit((FactorExpression) exp);
-        } else if (exp instanceof IfExpression) {
-            return this.visit((IfExpression) exp);
-        } else if (exp instanceof MethodCallExpression) {
-            return this.visit((MethodCallExpression) exp);
-        } else if (exp instanceof MethodDeclarationExpression) {
-            return this.visit((MethodDeclarationExpression) exp);
-        } else if (exp instanceof ParameterExpression) {
-            return this.visit((ParameterExpression) exp);
-        } else if (exp instanceof RelExpression) {
-            return this.visit((RelExpression) exp);
-        } else if (exp instanceof StatementExpression) {
-            return this.visit((StatementExpression) exp);
-        } else if (exp instanceof StatementListExpression) {
-            return this.visit((StatementListExpression) exp);
-        } else if (exp instanceof TermExpression) {
-            return this.visit((TermExpression) exp);
-        } else if (exp instanceof WhileExpression) {
-            return this.visit((WhileExpression) exp);
-        } else if (exp instanceof StringLiteralExpression) {
-            return this.visit((StringLiteralExpression) exp);
-        } else if (exp instanceof FloatLiteralExpression) {
-            return this.visit((FloatLiteralExpression) exp);
-        } else if (exp instanceof IntegeralLiteralExpression) {
-            return this.visit((IntegeralLiteralExpression) exp);
-        } else if (exp instanceof CharLiteralExpression) {
-            return this.visit((CharLiteralExpression) exp);
+    
+    
+    public  int offset(SymbolTable.Symbol sym){
+        if (this.currentMethodName.equals("main")){
+            return sym.lidx+1;
+        }else{
+            return sym.lidx;
         }
-
-        return null;
     }
 
     public static String performEscaping(String anyliteral, byte[] source, int curpos, int line, int col) {
@@ -152,10 +107,10 @@ public class ByteCodeGenerator {
         Token identifier = ie.identifier;
         SymbolTable.Symbol symbol = gtable.getSymbol(identifier);
         if (ie.lengthSelector) {
-            this.currentAdapter.loadLocal(symbol.lidx);
+            this.currentAdapter.loadLocal(this.offset(symbol));
             this.currentAdapter.arrayLength();
         } else if (ie.arraySelector != null) {
-            this.currentAdapter.loadLocal(symbol.lidx);
+            this.currentAdapter.loadLocal(this.offset(symbol));
             ie.arraySelector.accept(this);
             if (null != symbol.type) {
                 switch (symbol.type) {
@@ -177,10 +132,10 @@ public class ByteCodeGenerator {
                 if (symbol.extra.equals("arg")) {
                     this.currentAdapter.loadArg(symbol.lidx);
                 } else {
-                    this.currentAdapter.loadLocal(symbol.lidx);
+                    this.currentAdapter.loadLocal(this.offset(symbol));
                 }
             } else {
-                this.currentAdapter.loadLocal(symbol.lidx);
+                this.currentAdapter.loadLocal(this.offset(symbol));
             }
         }
         return null;
@@ -215,7 +170,7 @@ public class ByteCodeGenerator {
 
     public Object visit(BlockExpression aThis) {
         aThis.statements.forEach((e) -> {
-            this.visit(e);
+            e.accept(this);
         });
         return null;
     }
@@ -223,24 +178,24 @@ public class ByteCodeGenerator {
     public Object visit(DeclVariableInitializedExpression aThis) {
         SymbolTable.Symbol symbol = gtable.getSymbol(aThis.identifier);
         aThis.initialize.accept(this);
-        System.out.println(symbol.lidx);
         if (null != aThis.type) {
             switch (aThis.type) {
                 case "int":
                     this.currentAdapter.newLocal(Type.INT_TYPE);
-                    this.currentAdapter.storeLocal(symbol.lidx, Type.INT_TYPE);
+                    this.currentAdapter.storeLocal(this.offset(symbol), Type.INT_TYPE);
                     break;
                 case "string":
-                    System.out.println(this.currentAdapter.newLocal(Type.getType(String.class)));
-                    this.currentAdapter.storeLocal(symbol.lidx, Type.getType(String.class));
+                    int jac=this.currentAdapter.newLocal(Type.getType(String.class));
+                    
+                    this.currentAdapter.storeLocal(this.offset(symbol), Type.getType(String.class));
                     break;
                 case "float":
                     this.currentAdapter.newLocal(Type.FLOAT_TYPE);
-                    this.currentAdapter.storeLocal(symbol.lidx, Type.FLOAT_TYPE);
+                    this.currentAdapter.storeLocal(this.offset(symbol), Type.FLOAT_TYPE);
                     break;
                 case "char":
                     this.currentAdapter.newLocal(Type.CHAR_TYPE);
-                    this.currentAdapter.storeLocal(symbol.lidx, Type.CHAR_TYPE);
+                    this.currentAdapter.storeLocal(this.offset(symbol), Type.CHAR_TYPE);
                     break;
                 default:
                     break;
@@ -262,17 +217,17 @@ public class ByteCodeGenerator {
                 case "int[]":
                     this.currentAdapter.newLocal(Type.getType(int[].class));
                     this.currentAdapter.newArray(Type.INT_TYPE);
-                    this.currentAdapter.storeLocal(symbol.lidx);
+                    this.currentAdapter.storeLocal(this.offset(symbol));
                     break;
                 case "float[]":
                     this.currentAdapter.newLocal(Type.getType(float[].class));
                     this.currentAdapter.newArray(Type.FLOAT_TYPE);
-                    this.currentAdapter.storeLocal(symbol.lidx);
+                    this.currentAdapter.storeLocal(this.offset(symbol));
                     break;
                 case "char[]":
                     this.currentAdapter.newLocal(Type.getType(char[].class));
                     this.currentAdapter.newArray(Type.FLOAT_TYPE);
-                    this.currentAdapter.storeLocal(symbol.lidx);
+                    this.currentAdapter.storeLocal(this.offset(symbol));
                     break;
                 default:
                     break;
@@ -328,7 +283,7 @@ public class ByteCodeGenerator {
 
     public Object visit(StatementListExpression aThis) {
         aThis.statements.forEach((mde) -> {
-            this.visit(mde);
+            mde.accept(this);
         });
         cw.visitEnd();
         try {
@@ -355,6 +310,7 @@ public class ByteCodeGenerator {
     public Object visit(MethodDeclarationExpression aThis) {
         SymbolTable.Symbol symbol = gtable.getSymbol(aThis.identifier);
         if (symbol.id.getText().equals("main") && symbol.type.equals("(void)")) {
+            this.currentMethodName="main";
             //Main Function Generator
             Method m = Method.getMethod("void main (String[])");
             this.currentAdapter = new GeneratorAdapter(GEN_FLAG, m, null, null, cw);
@@ -362,12 +318,14 @@ public class ByteCodeGenerator {
             if (aThis.parameters != null) {
                 aThis.parameters.accept(this);
             }
-            this.visit((BlockExpression) aThis.body);
+            aThis.body.accept(this);
 
             this.gtable = this.gtable.parent;
             this.currentAdapter.returnValue();
             this.currentAdapter.endMethod();
+            
         } else {
+            this.currentMethodName="";
             String[] split = symbol.type.split(";");
             String argtypes = "";
             for (int i = 0; i < split.length - 1; i++) {
@@ -384,7 +342,7 @@ public class ByteCodeGenerator {
             if (aThis.parameters != null) {
                 aThis.parameters.accept(this);
             }
-            this.visit((BlockExpression) aThis.body);
+            aThis.body.accept(this);
             this.gtable = this.gtable.parent;
             this.currentAdapter.returnValue();
             this.currentAdapter.endMethod();
