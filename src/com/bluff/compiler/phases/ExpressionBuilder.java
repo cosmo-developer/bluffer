@@ -11,6 +11,7 @@ import com.bluff.expr.ArgumentExpression;
 import com.bluff.expr.AssignmentExpression;
 import com.bluff.expr.BlockExpression;
 import com.bluff.expr.BooleanLiteralExpression;
+import com.bluff.expr.CharLiteralExpression;
 import com.bluff.expr.DeclVariableInitializedExpression;
 import com.bluff.expr.DeclareAndCreateArrayConstantExpression;
 import com.bluff.expr.DeclareAndCreateNewArrayExpression;
@@ -77,8 +78,11 @@ public class ExpressionBuilder extends BlufferBaseVisitor<Expression> {
             return new StringLiteralExpression(k.getText(), k.getLine(), k.getCharPositionInLine());
         } else if (ctx.IntegerLiteral() != null) {
             Token k = ctx.IntegerLiteral().getSymbol();
-
             return new IntegeralLiteralExpression(Integer.parseInt(k.getText()), k.getLine(), k.getCharPositionInLine());
+        } else if(ctx.CharacterLiteral()!=null){
+            Token k = ctx.CharacterLiteral().getSymbol();
+            String val=ByteCodeGenerator.performEscaping(k.getText(), null, 0, 0, 0);
+            return new CharLiteralExpression(val.charAt(1), k.getLine(), k.getCharPositionInLine());
         }
         return super.visitLiteral(ctx); //To change body of generated methods, choose Tools | Templates.
     }
@@ -452,7 +456,7 @@ public class ExpressionBuilder extends BlufferBaseVisitor<Expression> {
             Set<String> keySet = params.parameters.keySet();
             for (String type : keySet) {
                 args += params.parameters.get(type).a + ";";
-                table.addSymbol(params.parameters.get(type).b, params.parameters.get(type).a, null);
+                table.addSymbol(params.parameters.get(type).b, params.parameters.get(type).a, "arg");
             }
         }
         args += "(" + returnType + ")";

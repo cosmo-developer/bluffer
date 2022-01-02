@@ -23,7 +23,7 @@ public class IdentifierExpression extends Expression{
 
     @Override
     public Object accept(ByteCodeGenerator generator) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return generator.visit(this);
     }
     
 }
