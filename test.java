@@ -1,8 +1,9 @@
 void main(){
-	string aprilfull="Another day";
+	float j=returnTrue()[0];
+	println(j);
 }
 
-void some(int jerk){
-	int sme=jerk;
-	int caluse=sme;
+float[] returnTrue(){
+	float[] jerk=new float[10];
+	return jerk;
 }

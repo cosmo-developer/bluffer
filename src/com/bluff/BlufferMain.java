@@ -9,7 +9,6 @@ import org.antlr.v4.Tool;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-
 /**
  *
  * @author Sonu Aryan <cosmo-developer@github.com>
