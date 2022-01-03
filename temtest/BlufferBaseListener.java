@@ -75,6 +75,18 @@ public class BlufferBaseListener implements BlufferListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterPrimitiveOrArray(BlufferParser.PrimitiveOrArrayContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPrimitiveOrArray(BlufferParser.PrimitiveOrArrayContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterParameters(BlufferParser.ParametersContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -231,6 +243,18 @@ public class BlufferBaseListener implements BlufferListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterEquSymbol(BlufferParser.EquSymbolContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitEquSymbol(BlufferParser.EquSymbolContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterRelExp(BlufferParser.RelExpContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -238,6 +262,18 @@ public class BlufferBaseListener implements BlufferListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitRelExp(BlufferParser.RelExpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterRelSymbol(BlufferParser.RelSymbolContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitRelSymbol(BlufferParser.RelSymbolContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -255,6 +291,18 @@ public class BlufferBaseListener implements BlufferListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterAddSymbol(BlufferParser.AddSymbolContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAddSymbol(BlufferParser.AddSymbolContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterTerm(BlufferParser.TermContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -262,6 +310,18 @@ public class BlufferBaseListener implements BlufferListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitTerm(BlufferParser.TermContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterTermSymbol(BlufferParser.TermSymbolContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTermSymbol(BlufferParser.TermSymbolContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
