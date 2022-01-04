@@ -68,16 +68,13 @@ public class ByteCodeGenerator {
     SymbolTable gtable;
     final int GEN_FLAG = ACC_PUBLIC + ACC_STATIC;
     final String className;
-    Label endMark;
     String currentMethodName = "";
 
     public ByteCodeGenerator(String className, SymbolTable table) {
         cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
         this.gtable = table;
         cw.visit(V1_8, ACC_PUBLIC, className, null, "java/lang/Object", null);
-        this.className = className;
-        this.endMark = new Label();
-
+        this.className=className;
     }
 
     public int offset(SymbolTable.Symbol sym) {
@@ -236,6 +233,7 @@ public class ByteCodeGenerator {
             }else{
                 if (symbol.extra.equals("arg")){
                 }else{
+                    System.out.println("Selecting F");
                     this.currentAdapter.loadLocal(this.offset(symbol));
                     aThis.arraySelector.accept(this);
                     aThis.initializer.accept(this);
@@ -625,7 +623,9 @@ public class ByteCodeGenerator {
             }
             aThis.body.accept(this);
             this.gtable = this.gtable.parent;
-            this.currentAdapter.returnValue();
+            if (split[split.length-1].equals("(void)")){
+                this.currentAdapter.returnValue();
+            }
             this.currentAdapter.endMethod();
         }
 

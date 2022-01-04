@@ -6,46 +6,14 @@
 package com.bluff.compiler.phases;
 
 import com.bluff.SymbolTable;
-import com.bluff.expr.AddExpression;
-import com.bluff.expr.ArgumentExpression;
-import com.bluff.expr.AssignmentExpression;
-import com.bluff.expr.BlockExpression;
-import com.bluff.expr.BooleanLiteralExpression;
-import com.bluff.expr.CharLiteralExpression;
-import com.bluff.expr.DeclVariableInitializedExpression;
-import com.bluff.expr.DeclareAndCreateArrayConstantExpression;
-import com.bluff.expr.DeclareAndCreateNewArrayExpression;
-import com.bluff.expr.DeclareArrayAndAssignExpression;
-import com.bluff.expr.DeclareArrayExpression;
-import com.bluff.expr.DeclareVariableExpression;
-import com.bluff.expr.ElseExpression;
-import com.bluff.expr.ElseIfExpression;
-import com.bluff.expr.EquExpression;
-import com.bluff.expr.Expression;
-import com.bluff.expr.FactorExpression;
-import com.bluff.expr.FloatLiteralExpression;
-import com.bluff.expr.IdentifierExpression;
-import com.bluff.expr.IfExpression;
-import com.bluff.expr.IntegeralLiteralExpression;
-import com.bluff.expr.MethodCallExpression;
-import com.bluff.expr.MethodDeclarationExpression;
-import com.bluff.expr.ParExpression;
-import com.bluff.expr.ParameterExpression;
-import com.bluff.expr.RelExpression;
-import com.bluff.expr.ReturnExpression;
-import com.bluff.expr.StatementListExpression;
-import com.bluff.expr.StringLiteralExpression;
-import com.bluff.expr.TermExpression;
-import com.bluff.expr.WhileExpression;
+import com.bluff.TriPair;
+import com.bluff.expr.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.misc.Pair;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
@@ -445,19 +413,24 @@ public class ExpressionBuilder extends BlufferBaseVisitor<Expression> {
     //replace HashMap with others
     @Override
     public Expression visitParameters(BlufferParser.ParametersContext ctx) {
-        HashMap<String, Pair<String, Token>> params = new HashMap<>();
+         ArrayList<TriPair<String,String,Token>> params=new ArrayList<>();
         List<BlufferParser.PrimitiveOrArrayContext> param = ctx.primitiveOrArray();
+        
+        
         param.forEach((pctx) -> {
             if (pctx.declVar() != null) {
-                params.put(pctx.declVar().Identifier().getSymbol().getText(),
-                        new Pair(pctx.declVar().primitiveType().getText(),
-                                pctx.declVar().Identifier().getSymbol()));
+                params.add(new TriPair(pctx.declVar().Identifier().getSymbol().getText(),
+                    pctx.declVar().primitiveType().getText(),pctx.declVar().Identifier().getSymbol()));
+                
             } else if (pctx.declareArray() != null) {
-                params.put(pctx.declareArray().Identifier().getSymbol().getText(),
-                        new Pair(pctx.declareArray().arrayType().getText(),
-                                pctx.declareArray().Identifier().getSymbol()));
+                params.add(new TriPair(
+                        pctx.declareArray().Identifier().getSymbol().getText(),
+                        pctx.declareArray().arrayType().getText(),
+                        pctx.declareArray().Identifier().getSymbol()
+                ));
             }
         });
+//        System.out.println(params);
         return new ParameterExpression(params); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -477,10 +450,10 @@ public class ExpressionBuilder extends BlufferBaseVisitor<Expression> {
         ParameterExpression params = null;
         if (ctx.parameters() != null) {
             params = (ParameterExpression) this.visit(ctx.parameters());
-            Set<String> keySet = params.parameters.keySet();
-            for (String type : keySet) {
-                args += params.parameters.get(type).a + ";";
-                table.addSymbol(params.parameters.get(type).b, params.parameters.get(type).a, "arg");
+            ArrayList<TriPair<String, String, Token>> pkc = params.parameters;
+            for (TriPair<String,String,Token> type : pkc) {
+                args += type.b + ";";
+                table.addSymbol(type.c, type.b, "arg");
             }
         }
         args += "(" + returnType + ")";

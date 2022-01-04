@@ -5,19 +5,19 @@
  */
 package com.bluff.expr;
 
+import com.bluff.TriPair;
 import com.bluff.compiler.phases.ByteCodeGenerator;
-import java.util.HashMap;
+import java.util.ArrayList;
 import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.misc.Pair;
 
 /**
  *
  * @author Sonu Aryan <cosmo-developer@github.com>
  */
 public class ParameterExpression extends Expression{
-    public final HashMap<String,Pair<String,Token>> parameters;
+    public final ArrayList<TriPair<String,String,Token>> parameters;
 
-    public ParameterExpression(HashMap<String, Pair<String,Token>> parameters) {
+    public ParameterExpression(ArrayList<TriPair<String,String,Token>> parameters) {
         this.parameters = parameters;
        
     }

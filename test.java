@@ -1,14 +1,14 @@
 
 void main() {
-	float data=mult(3.0f,2,9.0f);
+	jackpot();
+	int jack=1;
+	if (jack==1){
+		int[] jackal=new int[1000];
+		println("Somewhere how is writing an easy to solve problem!");
+	}
 }
 
-float mult(float a, int n, float b) {
-   return a * b;
-}
-
-bool flip(bool b) {
-    if (b) return false;
-    
-	return false;
+void jackpot(){
+	float[] terabyte=new float[11];
+	int jack=1;
 }
