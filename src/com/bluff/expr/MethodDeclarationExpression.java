@@ -8,6 +8,7 @@ package com.bluff.expr;
 import com.bluff.SymbolTable;
 import com.bluff.compiler.phases.ByteCodeGenerator;
 import org.antlr.v4.runtime.Token;
+import org.objectweb.asm.Label;
 
 /**
  *
@@ -19,6 +20,8 @@ public class MethodDeclarationExpression extends Expression{
     public final ParameterExpression parameters;
     public final BlockExpression body;
     public final SymbolTable table;
+    public Label start;
+    public Label end;
 
     public MethodDeclarationExpression(String returnType,
             Token identifier, ParameterExpression parameters, 
@@ -28,6 +31,8 @@ public class MethodDeclarationExpression extends Expression{
         this.parameters = parameters;
         this.body = body;
         this.table=table;
+        this.start=new Label();
+        this.end=new Label();
     }
     
     

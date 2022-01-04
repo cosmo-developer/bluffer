@@ -6,44 +6,14 @@
 package com.bluff.compiler.phases;
 
 import com.bluff.SymbolTable;
-import com.bluff.expr.AddExpression;
-import com.bluff.expr.ArgumentExpression;
-import com.bluff.expr.AssignmentExpression;
-import com.bluff.expr.BlockExpression;
-import com.bluff.expr.BooleanLiteralExpression;
-import com.bluff.expr.CharLiteralExpression;
-import com.bluff.expr.DeclVariableInitializedExpression;
-import com.bluff.expr.DeclareAndCreateArrayConstantExpression;
-import com.bluff.expr.DeclareAndCreateNewArrayExpression;
-import com.bluff.expr.DeclareArrayAndAssignExpression;
-import com.bluff.expr.DeclareArrayExpression;
-import com.bluff.expr.DeclareVariableExpression;
-import com.bluff.expr.ElseExpression;
-import com.bluff.expr.ElseIfExpression;
-import com.bluff.expr.EquExpression;
-import com.bluff.expr.Expression;
-import com.bluff.expr.FactorExpression;
-import com.bluff.expr.FloatLiteralExpression;
-import com.bluff.expr.IdentifierExpression;
-import com.bluff.expr.IfExpression;
-import com.bluff.expr.IntegeralLiteralExpression;
-import com.bluff.expr.MethodCallExpression;
-import com.bluff.expr.MethodDeclarationExpression;
-import com.bluff.expr.ParExpression;
-import com.bluff.expr.ParameterExpression;
-import com.bluff.expr.RelExpression;
-import com.bluff.expr.ReturnExpression;
-import com.bluff.expr.StatementExpression;
-import com.bluff.expr.StatementListExpression;
-import com.bluff.expr.StringLiteralExpression;
-import com.bluff.expr.TermExpression;
-import com.bluff.expr.WhileExpression;
+import com.bluff.expr.*;
 import java.io.BufferedOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.antlr.v4.runtime.Token;
@@ -69,12 +39,14 @@ public class ByteCodeGenerator {
     final int GEN_FLAG = ACC_PUBLIC + ACC_STATIC;
     final String className;
     String currentMethodName = "";
+    Stack<Expression> currentBuilding;
 
     public ByteCodeGenerator(String className, SymbolTable table) {
         cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
         this.gtable = table;
         cw.visit(V1_8, ACC_PUBLIC, className, null, "java/lang/Object", null);
-        this.className=className;
+        this.className = className;
+        this.currentBuilding = new Stack();
     }
 
     public int offset(SymbolTable.Symbol sym) {
@@ -114,12 +86,27 @@ public class ByteCodeGenerator {
     public Object visit(IdentifierExpression ie) {
         Token identifier = ie.identifier;
         SymbolTable.Symbol symbol = gtable.getSymbol(identifier);
+        symbol.extra = symbol.extra == null ? "" : symbol.extra;
         if (ie.lengthSelector) {
-            this.currentAdapter.loadLocal(this.offset(symbol));
-            this.currentAdapter.arrayLength();
+            if (!symbol.extra.equals("arg")) {
+                this.currentAdapter.loadLocal(this.offset(symbol));
+            } else {
+                this.currentAdapter.loadArg(this.offset(symbol));
+            }
+            if (!symbol.type.equals("string")) {
+                this.currentAdapter.arrayLength();
+            } else {
+                this.currentAdapter.invokeVirtual(Type.getType(String.class),
+                        Method.getMethod("int length()")
+                );
+            }
             return "int";
         } else if (ie.arraySelector != null) {
-            this.currentAdapter.loadLocal(this.offset(symbol));
+            if (!symbol.extra.equals("arg")) {
+                this.currentAdapter.loadLocal(this.offset(symbol));
+            } else {
+                this.currentAdapter.loadArg(this.offset(symbol));
+            }
             ie.arraySelector.accept(this);
             if (null != symbol.type) {
                 switch (symbol.type) {
@@ -132,6 +119,11 @@ public class ByteCodeGenerator {
                     case "char[]":
                         this.currentAdapter.arrayLoad(Type.CHAR_TYPE);
                         break;
+                    case "string":
+                        this.currentAdapter.invokeVirtual(Type.getType(String.class),
+                                Method.getMethod("char charAt(int)")
+                        );
+                        return "char";
                     default:
                         break;
                 }
@@ -140,7 +132,7 @@ public class ByteCodeGenerator {
         } else {
             if (symbol.extra != null) {
                 if (symbol.extra.equals("arg")) {
-                    this.currentAdapter.loadArg(symbol.lidx);
+                    this.currentAdapter.loadArg(this.offset(symbol));
                 } else {
                     this.currentAdapter.loadLocal(this.offset(symbol));
                 }
@@ -221,19 +213,18 @@ public class ByteCodeGenerator {
     public Object visit(AssignmentExpression aThis) {
         Token identifier = aThis.identifier;
         SymbolTable.Symbol symbol = gtable.getSymbol(identifier);
-        aThis.initializer.accept(this);
-        symbol.extra=symbol.extra==null?"":symbol.extra;
+        symbol.extra = symbol.extra == null ? "" : symbol.extra;
         if (symbol.extra != null) {
             if (aThis.arraySelector == null) {
+                aThis.initializer.accept(this);
                 if (symbol.extra.equals("arg")) {
                     this.currentAdapter.storeArg(this.offset(symbol));
                 } else {
                     this.currentAdapter.storeLocal(this.offset(symbol));
                 }
-            }else{
-                if (symbol.extra.equals("arg")){
-                }else{
-                    System.out.println("Selecting F");
+            } else {
+                if (symbol.extra.equals("arg")) {
+                } else {
                     this.currentAdapter.loadLocal(this.offset(symbol));
                     aThis.arraySelector.accept(this);
                     aThis.initializer.accept(this);
@@ -359,7 +350,7 @@ public class ByteCodeGenerator {
             Object accept1 = aThis.exps.get(ctx++).accept(this);
             if ("==".equals(operation)) {
                 this.currentAdapter.visitLabel(start);
-                this.currentAdapter.ifCmp(getType((String) accept),Opcodes.IFEQ, divider);
+                this.currentAdapter.ifCmp(getType((String) accept), Opcodes.IFEQ, divider);
                 this.currentAdapter.push(false);
                 this.currentAdapter.goTo(end);
                 this.currentAdapter.visitLabel(divider);
@@ -367,7 +358,7 @@ public class ByteCodeGenerator {
                 this.currentAdapter.visitLabel(end);
             } else if ("!=".equals(operation)) {
                 this.currentAdapter.visitLabel(start);
-                this.currentAdapter.ifCmp(getType((String) accept),Opcodes.IFNE, divider);
+                this.currentAdapter.ifCmp(getType((String) accept), Opcodes.IFNE, divider);
                 this.currentAdapter.push(false);
                 this.currentAdapter.goTo(end);
                 this.currentAdapter.visitLabel(divider);
@@ -441,6 +432,12 @@ public class ByteCodeGenerator {
             this.currentAdapter.invokeVirtual(Type.getType(PrintStream.class),
                     Method.getMethod("void println (" + accept.get(0) + ")"));
             return "int";
+        } else if (identifier.getText().equals("print")) {
+            this.currentAdapter.getStatic(Type.getType(System.class), "out", Type.getType(PrintStream.class));
+            ArrayList<Object> accept = (ArrayList<Object>) aThis.args.accept(this);
+            this.currentAdapter.invokeVirtual(Type.getType(PrintStream.class),
+                    Method.getMethod("void print (" + accept.get(0) + ")"));
+            return "int";
         } else {
             SymbolTable.Symbol symbol = gtable.getSymbol(aThis.identifier);
             String[] split = symbol.type.split(";");
@@ -458,12 +455,22 @@ public class ByteCodeGenerator {
             this.currentAdapter.invokeStatic(Type.getType(this.className),
                     m);
             if (aThis.lengthSelector) {
-                this.currentAdapter.arrayLength();
+                String tip = Type.getType(m.getReturnType().getClassName()
+                        .replace("[", "").replace("]", "")).toString();
+                if (!tip.equals("java.lang.String")) {
+                    this.currentAdapter.arrayLength();
+                } else {
+                    this.currentAdapter.invokeVirtual(Type.getType(String.class),
+                            Method.getMethod("int length()")
+                    );
+                }
+
                 return "int";
             } else if (aThis.arraySelector != null) {
                 aThis.arraySelector.accept(this);
                 String tip = Type.getType(m.getReturnType().getClassName()
                         .replace("[", "").replace("]", "")).toString();
+                System.out.println("rEturn type:" + tip);
                 if (null != tip) {
                     switch (tip) {
                         case "int":
@@ -475,6 +482,11 @@ public class ByteCodeGenerator {
                         case "float":
                             this.currentAdapter.arrayLoad(Type.FLOAT_TYPE);
                             break;
+                        case "java.lang.String":
+                            this.currentAdapter.invokeVirtual(Type.getType(String.class),
+                                    Method.getMethod("char charAt(int)")
+                            );
+                            return "char";
                         default:
                             break;
                     }
@@ -497,45 +509,47 @@ public class ByteCodeGenerator {
             Label divider = new Label();
             Label end = new Label();
             Object accept1 = aThis.exps.get(ctx++).accept(this);
-            if (null != operation) switch (operation) {
-                case "<":
-                    this.currentAdapter.visitLabel(start);
-                    this.currentAdapter.ifCmp(getType((String) accept),Opcodes.IFLT, divider);
-                    this.currentAdapter.push(false);
-                    this.currentAdapter.goTo(end);
-                    this.currentAdapter.visitLabel(divider);
-                    this.currentAdapter.push(true);
-                    this.currentAdapter.visitLabel(end);
-                    break;
-                case ">":
-                    this.currentAdapter.visitLabel(start);
-                    this.currentAdapter.ifCmp(getType((String) accept),Opcodes.IFGT, divider);
-                    this.currentAdapter.push(false);
-                    this.currentAdapter.goTo(end);
-                    this.currentAdapter.visitLabel(divider);
-                    this.currentAdapter.push(true);
-                    this.currentAdapter.visitLabel(end);
-                    break;
-                case ">=":
-                    this.currentAdapter.visitLabel(start);
-                    this.currentAdapter.ifCmp(getType((String) accept),Opcodes.IFGE, divider);
-                    this.currentAdapter.push(false);
-                    this.currentAdapter.goTo(end);
-                    this.currentAdapter.visitLabel(divider);
-                    this.currentAdapter.push(true);
-                    this.currentAdapter.visitLabel(end);
-                    break;
-                case "<=":
-                    this.currentAdapter.visitLabel(start);
-                    this.currentAdapter.ifCmp(getType((String) accept),Opcodes.IFLE, divider);
-                    this.currentAdapter.push(false);
-                    this.currentAdapter.goTo(end);
-                    this.currentAdapter.visitLabel(divider);
-                    this.currentAdapter.push(true);
-                    this.currentAdapter.visitLabel(end);
-                    break;
-                default:
-                    break;
+            if (null != operation) {
+                switch (operation) {
+                    case "<":
+                        this.currentAdapter.visitLabel(start);
+                        this.currentAdapter.ifCmp(getType((String) accept), Opcodes.IFLT, divider);
+                        this.currentAdapter.push(false);
+                        this.currentAdapter.goTo(end);
+                        this.currentAdapter.visitLabel(divider);
+                        this.currentAdapter.push(true);
+                        this.currentAdapter.visitLabel(end);
+                        break;
+                    case ">":
+                        this.currentAdapter.visitLabel(start);
+                        this.currentAdapter.ifCmp(getType((String) accept), Opcodes.IFGT, divider);
+                        this.currentAdapter.push(false);
+                        this.currentAdapter.goTo(end);
+                        this.currentAdapter.visitLabel(divider);
+                        this.currentAdapter.push(true);
+                        this.currentAdapter.visitLabel(end);
+                        break;
+                    case ">=":
+                        this.currentAdapter.visitLabel(start);
+                        this.currentAdapter.ifCmp(getType((String) accept), Opcodes.IFGE, divider);
+                        this.currentAdapter.push(false);
+                        this.currentAdapter.goTo(end);
+                        this.currentAdapter.visitLabel(divider);
+                        this.currentAdapter.push(true);
+                        this.currentAdapter.visitLabel(end);
+                        break;
+                    case "<=":
+                        this.currentAdapter.visitLabel(start);
+                        this.currentAdapter.ifCmp(getType((String) accept), Opcodes.IFLE, divider);
+                        this.currentAdapter.push(false);
+                        this.currentAdapter.goTo(end);
+                        this.currentAdapter.visitLabel(divider);
+                        this.currentAdapter.push(true);
+                        this.currentAdapter.visitLabel(end);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
         return "boolean";
@@ -556,9 +570,9 @@ public class ByteCodeGenerator {
                 bos.flush();
             }
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(ByteCodeGenerator.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ByteCodeGenerator.class.getName()).log(Level.FINEST, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(ByteCodeGenerator.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ByteCodeGenerator.class.getName()).log(Level.FINEST, null, ex);
         }
         return null;
     }
@@ -596,10 +610,12 @@ public class ByteCodeGenerator {
             Method m = Method.getMethod("void main (String[])");
             this.currentAdapter = new GeneratorAdapter(GEN_FLAG, m, null, null, cw);
             this.gtable = aThis.table;
+            this.currentAdapter.visitLabel(aThis.start);
             if (aThis.parameters != null) {
                 aThis.parameters.accept(this);
             }
             aThis.body.accept(this);
+            this.currentAdapter.visitLabel(aThis.end);
             this.gtable = this.gtable.parent;
             this.currentAdapter.returnValue();
             this.currentAdapter.endMethod();
@@ -623,7 +639,7 @@ public class ByteCodeGenerator {
             }
             aThis.body.accept(this);
             this.gtable = this.gtable.parent;
-            if (split[split.length-1].equals("(void)")){
+            if (split[split.length - 1].equals("(void)")) {
                 this.currentAdapter.returnValue();
             }
             this.currentAdapter.endMethod();
