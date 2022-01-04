@@ -8,6 +8,7 @@ package com.bluff.compiler.phases;
 import com.bluff.SymbolTable;
 import com.bluff.expr.*;
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -40,13 +41,15 @@ public class ByteCodeGenerator {
     final String className;
     String currentMethodName = "";
     Stack<Expression> currentBuilding;
+    final File wholeFile;
 
-    public ByteCodeGenerator(String className, SymbolTable table) {
+    public ByteCodeGenerator(String className,File wholeFile, SymbolTable table) {
         cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
         this.gtable = table;
         cw.visit(V1_8, ACC_PUBLIC, className, null, "java/lang/Object", null);
         this.className = className;
         this.currentBuilding = new Stack();
+        this.wholeFile=wholeFile;
     }
 
     public int offset(SymbolTable.Symbol sym) {
@@ -565,7 +568,8 @@ public class ByteCodeGenerator {
         });
         cw.visitEnd();
         try {
-            try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(className + ".class"))) {
+            try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(
+                    wholeFile.getParent()+"/"+className + ".class"))) {
                 bos.write(cw.toByteArray());
                 bos.flush();
             }
