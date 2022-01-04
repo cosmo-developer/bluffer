@@ -6,42 +6,14 @@
 package com.bluff.compiler.phases;
 
 import com.bluff.SymbolTable;
-import com.bluff.expr.AddExpression;
-import com.bluff.expr.ArgumentExpression;
-import com.bluff.expr.AssignmentExpression;
-import com.bluff.expr.BlockExpression;
-import com.bluff.expr.BooleanLiteralExpression;
-import com.bluff.expr.CharLiteralExpression;
-import com.bluff.expr.DeclVariableInitializedExpression;
-import com.bluff.expr.DeclareAndCreateArrayConstantExpression;
-import com.bluff.expr.DeclareAndCreateNewArrayExpression;
-import com.bluff.expr.DeclareArrayAndAssignExpression;
-import com.bluff.expr.DeclareArrayExpression;
-import com.bluff.expr.DeclareVariableExpression;
-import com.bluff.expr.ElseExpression;
-import com.bluff.expr.EquExpression;
-import com.bluff.expr.Expression;
-import com.bluff.expr.FactorExpression;
-import com.bluff.expr.IdentifierExpression;
-import com.bluff.expr.IfExpression;
-import com.bluff.expr.IntegeralLiteralExpression;
-import com.bluff.expr.MethodCallExpression;
-import com.bluff.expr.MethodDeclarationExpression;
-import com.bluff.expr.ParExpression;
-import com.bluff.expr.ParameterExpression;
-import com.bluff.expr.RelExpression;
-import com.bluff.expr.ReturnExpression;
-import com.bluff.expr.StatementListExpression;
-import com.bluff.expr.StringLiteralExpression;
-import com.bluff.expr.WhileExpression;
+import com.bluff.TriPair;
+import com.bluff.expr.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.misc.Pair;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
@@ -53,10 +25,14 @@ public class ExpressionBuilder extends BlufferBaseVisitor<Expression> {
 
     public final SymbolTable gtable;
     SymbolTable ctable;
+    Stack<IfExpression> ifStack;
+    Stack<ElseExpression> elseStack;
 
     public ExpressionBuilder() {
         gtable = new SymbolTable(null);
         ctable = gtable;
+        ifStack = new Stack();
+        elseStack = new Stack();
     }
 
     public SymbolTable curr() {
@@ -79,10 +55,13 @@ public class ExpressionBuilder extends BlufferBaseVisitor<Expression> {
         } else if (ctx.IntegerLiteral() != null) {
             Token k = ctx.IntegerLiteral().getSymbol();
             return new IntegeralLiteralExpression(Integer.parseInt(k.getText()), k.getLine(), k.getCharPositionInLine());
-        } else if(ctx.CharacterLiteral()!=null){
+        } else if (ctx.CharacterLiteral() != null) {
             Token k = ctx.CharacterLiteral().getSymbol();
-            String val=ByteCodeGenerator.performEscaping(k.getText(), null, 0, 0, 0);
-            return new CharLiteralExpression(val.charAt(1), k.getLine(), k.getCharPositionInLine());
+            String val = ByteCodeGenerator.performEscaping(k.getText(), null, 0, 0, 0);
+            return new CharLiteralExpression(val.charAt(0), k.getLine(), k.getCharPositionInLine());
+        } else if (ctx.FloatingPointLiteral() != null) {
+            Token k = ctx.FloatingPointLiteral().getSymbol();
+            return new FloatLiteralExpression(Float.parseFloat(k.getText()), k.getLine(), k.getCharPositionInLine());
         }
         return super.visitLiteral(ctx); //To change body of generated methods, choose Tools | Templates.
     }
@@ -174,16 +153,16 @@ public class ExpressionBuilder extends BlufferBaseVisitor<Expression> {
         ArrayList<Expression> exps = new ArrayList<>();
         ArrayList<String> operations = new ArrayList<>();
         int ctr = 0;
+        exps.add(this.visit(ctx.factor(ctr++)));
         for (BlufferParser.TermSymbolContext sym : ctx.termSymbol()) {
             String operator = chooseNotNull(
                     sym.DIV(), sym.MOD(),
                     sym.MUL()
             ).getSymbol().getText();
             exps.add(this.visit(ctx.factor(ctr++)));
-            exps.add(this.visit(ctx.factor(ctr++)));
             operations.add(operator);
         }
-        return new AddExpression(exps, operations);
+        return new TermExpression(exps, operations);
     }
 
     @Override
@@ -195,11 +174,12 @@ public class ExpressionBuilder extends BlufferBaseVisitor<Expression> {
         ArrayList<Expression> exps = new ArrayList<>();
         ArrayList<String> operations = new ArrayList<>();
         int ctr = 0;
+        exps.add(this.visit(ctx.term(ctr++)));
         for (BlufferParser.AddSymbolContext sym : ctx.addSymbol()) {
             String operator = chooseNotNull(
                     sym.ADD(), sym.SUB()
             ).getSymbol().getText();
-            exps.add(this.visit(ctx.term(ctr++)));
+
             exps.add(this.visit(ctx.term(ctr++)));
             operations.add(operator);
         }
@@ -237,9 +217,9 @@ public class ExpressionBuilder extends BlufferBaseVisitor<Expression> {
         ArrayList<Expression> exps = new ArrayList<>();
         ArrayList<String> operations = new ArrayList<>();
         int ctr = 0;
+        exps.add(this.visit(ctx.relExp(ctr++)));
         for (BlufferParser.EquSymbolContext sym : equSymbol) {
             String operator = chooseNotNull(sym.EQUAL(), sym.NOTEQUAL()).getSymbol().getText();
-            exps.add(this.visit(ctx.relExp(ctr++)));
             exps.add(this.visit(ctx.relExp(ctr++)));
             operations.add(operator);
         }
@@ -370,29 +350,39 @@ public class ExpressionBuilder extends BlufferBaseVisitor<Expression> {
         return null;
     }
 
+    void buildElseIfExpression(BlufferParser.StatementContext ctx) {
+        if (ctx.ELSE() != null) {
+            if (ctx.statement(1).IF() != null) {
+                ElseIfExpression eie = new ElseIfExpression(this.visit(ctx.statement(1).parExpression()),
+                        this.visit(ctx.statement(1).statement(0)), null, null);
+                eie.parent = this.ifStack.peek();
+                this.ifStack.peek().elseIfExpression.add(eie);
+                this.buildElseIfExpression(ctx.statement(1));
+            } else {
+                Expression elseSt = this.visit(ctx.statement(1));
+                ElseExpression exp = new ElseExpression(elseSt, null);
+                exp.parent = (IfExpression) this.ifStack.peek();
+                this.ifStack.pop().elseExpression = exp;
+            }
+        }else{
+            this.ifStack.pop();
+        }
+    }
+
     @Override
     public Expression visitStatement(BlufferParser.StatementContext ctx) {
         Expression toReturn = null;
         if (ctx.WHILE() != null) {
             Expression condition = this.visit(ctx.parExpression());
-            SymbolTable table = new SymbolTable(curr());
-            setCurr(table);
             Expression statement = this.visit(ctx.statement(0));
-            setCurr(table.parent);
-            toReturn = new WhileExpression(condition, statement, table);
+            toReturn = new WhileExpression(condition, statement, null);
         } else if (ctx.IF() != null) {
-            SymbolTable table = new SymbolTable(curr());
-            setCurr(table);
-            Expression statement = this.visit(ctx.statement(0));
-            setCurr(table.parent);
-            toReturn = new ElseExpression(statement, table);
-        } else if (ctx.ELSE() != null) {
             Expression condition = this.visit(ctx.parExpression());
-            SymbolTable table = new SymbolTable(curr());
-            setCurr(table);
             Expression statement = this.visit(ctx.statement(0));
-            setCurr(table.parent);
-            toReturn = new IfExpression(condition, statement, table);
+            toReturn = new IfExpression(condition, statement, null, null);
+            this.ifStack.push((IfExpression) toReturn);
+            this.buildElseIfExpression(ctx);
+
         } else if (ctx.RETURN() != null) {
             if (ctx.expression() != null) {
                 toReturn = new ReturnExpression(this.visit(ctx.expression()));
@@ -418,22 +408,29 @@ public class ExpressionBuilder extends BlufferBaseVisitor<Expression> {
         });
         return new BlockExpression(expressionList);
     }
-
+    
+    //Almost done fix this to generate right order function arguments
+    //replace HashMap with others
     @Override
     public Expression visitParameters(BlufferParser.ParametersContext ctx) {
-        HashMap<String, Pair<String, Token>> params = new HashMap<>();
+         ArrayList<TriPair<String,String,Token>> params=new ArrayList<>();
         List<BlufferParser.PrimitiveOrArrayContext> param = ctx.primitiveOrArray();
+        
+        
         param.forEach((pctx) -> {
             if (pctx.declVar() != null) {
-                params.put(pctx.declVar().Identifier().getSymbol().getText(),
-                        new Pair(pctx.declVar().primitiveType().getText(),
-                                pctx.declVar().Identifier().getSymbol()));
+                params.add(new TriPair(pctx.declVar().Identifier().getSymbol().getText(),
+                    pctx.declVar().primitiveType().getText(),pctx.declVar().Identifier().getSymbol()));
+                
             } else if (pctx.declareArray() != null) {
-                params.put(pctx.declareArray().Identifier().getSymbol().getText(),
-                        new Pair(pctx.declareArray().arrayType().getText(),
-                                pctx.declareArray().Identifier().getSymbol()));
+                params.add(new TriPair(
+                        pctx.declareArray().Identifier().getSymbol().getText(),
+                        pctx.declareArray().arrayType().getText(),
+                        pctx.declareArray().Identifier().getSymbol()
+                ));
             }
         });
+//        System.out.println(params);
         return new ParameterExpression(params); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -443,7 +440,7 @@ public class ExpressionBuilder extends BlufferBaseVisitor<Expression> {
         if (ctx.VOID() != null) {
             returnType = "void";
         } else if (ctx.arrayType() != null) {
-            returnType =   ctx.arrayType().start.getText()+"[]";
+            returnType = ctx.arrayType().start.getText() + "[]";
         } else if (ctx.type() != null) {
             returnType = ctx.type().primitiveType().start.getText();
         }
@@ -453,10 +450,10 @@ public class ExpressionBuilder extends BlufferBaseVisitor<Expression> {
         ParameterExpression params = null;
         if (ctx.parameters() != null) {
             params = (ParameterExpression) this.visit(ctx.parameters());
-            Set<String> keySet = params.parameters.keySet();
-            for (String type : keySet) {
-                args += params.parameters.get(type).a + ";";
-                table.addSymbol(params.parameters.get(type).b, params.parameters.get(type).a, "arg");
+            ArrayList<TriPair<String, String, Token>> pkc = params.parameters;
+            for (TriPair<String,String,Token> type : pkc) {
+                args += type.b + ";";
+                table.addSymbol(type.c, type.b, "arg");
             }
         }
         args += "(" + returnType + ")";

@@ -57,6 +57,16 @@ public interface BlufferListener extends ParseTreeListener {
 	 */
 	void exitPrimitiveType(BlufferParser.PrimitiveTypeContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link BlufferParser#primitiveOrArray}.
+	 * @param ctx the parse tree
+	 */
+	void enterPrimitiveOrArray(BlufferParser.PrimitiveOrArrayContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BlufferParser#primitiveOrArray}.
+	 * @param ctx the parse tree
+	 */
+	void exitPrimitiveOrArray(BlufferParser.PrimitiveOrArrayContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link BlufferParser#parameters}.
 	 * @param ctx the parse tree
 	 */
@@ -187,6 +197,16 @@ public interface BlufferListener extends ParseTreeListener {
 	 */
 	void exitEquExp(BlufferParser.EquExpContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link BlufferParser#equSymbol}.
+	 * @param ctx the parse tree
+	 */
+	void enterEquSymbol(BlufferParser.EquSymbolContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BlufferParser#equSymbol}.
+	 * @param ctx the parse tree
+	 */
+	void exitEquSymbol(BlufferParser.EquSymbolContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link BlufferParser#relExp}.
 	 * @param ctx the parse tree
 	 */
@@ -196,6 +216,16 @@ public interface BlufferListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitRelExp(BlufferParser.RelExpContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link BlufferParser#relSymbol}.
+	 * @param ctx the parse tree
+	 */
+	void enterRelSymbol(BlufferParser.RelSymbolContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BlufferParser#relSymbol}.
+	 * @param ctx the parse tree
+	 */
+	void exitRelSymbol(BlufferParser.RelSymbolContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link BlufferParser#addExp}.
 	 * @param ctx the parse tree
@@ -207,6 +237,16 @@ public interface BlufferListener extends ParseTreeListener {
 	 */
 	void exitAddExp(BlufferParser.AddExpContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link BlufferParser#addSymbol}.
+	 * @param ctx the parse tree
+	 */
+	void enterAddSymbol(BlufferParser.AddSymbolContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BlufferParser#addSymbol}.
+	 * @param ctx the parse tree
+	 */
+	void exitAddSymbol(BlufferParser.AddSymbolContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link BlufferParser#term}.
 	 * @param ctx the parse tree
 	 */
@@ -216,6 +256,16 @@ public interface BlufferListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitTerm(BlufferParser.TermContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link BlufferParser#termSymbol}.
+	 * @param ctx the parse tree
+	 */
+	void enterTermSymbol(BlufferParser.TermSymbolContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BlufferParser#termSymbol}.
+	 * @param ctx the parse tree
+	 */
+	void exitTermSymbol(BlufferParser.TermSymbolContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link BlufferParser#factor}.
 	 * @param ctx the parse tree

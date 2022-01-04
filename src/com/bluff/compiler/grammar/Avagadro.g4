@@ -1,5 +1,5 @@
 
-grammar Avagadro;
+grammar Bluffer;
 
 statementList
 :
@@ -28,11 +28,17 @@ primitiveType
 	|'float'
 	|'char'
 	|'int'
+    | 'string'
+;
+
+primitiveOrArray
+:
+	(declVar|declareArray)
 ;
 
 parameters
 :
-	(type|arrayType) Identifier (',' (type|arrayType) Identifier)*
+	primitiveOrArray (',' primitiveOrArray)*
 ;
 
 block
@@ -46,15 +52,28 @@ block
 
 statement
 :
-    declVarInitialize ';'
+
+    ';'
+    | block
+    |declVarInitialize ';'
     | declareAndCreateNewArray ';'
+	| declareArrayAndAssign ';'
     | declareAndCreateArrayConstant ';'
 	| declareArray ';'
+    | methodCall ';'
     |declVar ';'
     |'if' parExpression statement ('else' statement)?
-    | 'while' parExpression statement
-
+    | 'while' parExpression  statement
+    | 'return' (';'|expression ';')
+	| assignment ';'
 ;
+
+assignment
+:
+    Identifier ('[' expression ']')? '=' expression
+;
+
+
 
 declVarInitialize
 :
@@ -77,6 +96,11 @@ declareAndCreateArrayConstant
     arrayType Identifier '=' '{' (expression (',' expression)* (',')? )? '}' 
 ;
 
+declareArrayAndAssign
+:
+	arrayType Identifier '=' expression
+;
+
 declVar
 :
     primitiveType Identifier
@@ -92,37 +116,56 @@ expression
 
 equExp
 :
-	relExp (('!='|'==') relExp)*
+	relExp (equSymbol relExp)*
+;
+equSymbol
+:
+	'!='|'=='
 ;
 
 relExp
 :
-	addExp (('<'|'>'|'>='|'<=') addExp)*
+	addExp (relSymbol addExp)*
+;
+
+relSymbol
+:
+	'<'|'>'|'>='|'<='
 ;
 
 addExp
 :
-	term (('+'|'-') term)*
+	term (addSymbol term)*
+;
+
+addSymbol
+:
+	'+'|'-'
 ;
 
 term
 :
-	factor (('*'|'/'|'%') factor)*
+	factor (termSymbol factor)*
+;
+
+termSymbol
+:
+	'*'|'/'|'%'
 ;
 
 factor
 :
 	'-' factor
 	|'+' factor
-	| parExpression
-	| methodCall selector?
+    | methodCall (selector)?
+	| parExpression (selector)?
 	| literal
-	| Identifier selector?
+	| Identifier (selector)?
 ;
 
 selector
 :
-	'.length'
+	'.' Identifier
 	|'[' expression ']'
 ;
 
@@ -162,7 +205,6 @@ NEW : 'new';
 RETURN : 'return';
 VOID : 'void';
 WHILE : 'while';
-LENGTH : 'length';
 
 // §3.10.1 Integer Literals
 

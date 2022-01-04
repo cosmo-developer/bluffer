@@ -13,21 +13,24 @@ import org.objectweb.asm.Label;
  *
  * @author Sonu Aryan <cosmo-developer@github.com>
  */
-public class WhileExpression extends Expression{
+public class ElseIfExpression extends Expression{
+    public IfExpression parent;
     public final Expression condition;
     public final Expression statement;
+    public Expression elseExpression;
     public final SymbolTable table;
     public Label start;
     public Label end;
 
-    public WhileExpression(Expression condition, Expression statement,SymbolTable table) {
+    public ElseIfExpression(Expression condition, Expression statement,
+            Expression elseExpression,SymbolTable table) {
         this.condition = condition;
         this.statement = statement;
+        this.elseExpression=elseExpression;
         this.table=table;
         this.start=new Label();
         this.end=new Label();
     }
-    
     @Override
     public Object accept(ByteCodeGenerator generator) {
         return generator.visit(this);

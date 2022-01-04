@@ -1,4 +1,11 @@
-
 void main(){
-	int f=main(3,4);
+	if (true){
+		println("Somewhere how");
+	}else if(true){
+		println("James Web Telescope");
+	} else if(false){
+		println("Nothing to do");
+	}else{
+		println("Jam");
+	}
 }

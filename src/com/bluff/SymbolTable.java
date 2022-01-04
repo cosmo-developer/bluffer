@@ -20,7 +20,7 @@ public class SymbolTable {
     public class Symbol{
         public final Token id;
         public final String type;
-        public final Object extra;
+        public Object extra;
         public  int lidx;
         public Symbol(Token id, String type,String extra) {
             this.id = id;
