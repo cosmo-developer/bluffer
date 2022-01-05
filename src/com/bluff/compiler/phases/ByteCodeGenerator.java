@@ -227,6 +227,10 @@ public class ByteCodeGenerator {
                 }
             } else {
                 if (symbol.extra.equals("arg")) {
+                    this.currentAdapter.loadArg(this.offset(symbol));
+                    aThis.arraySelector.accept(this);
+                    aThis.initializer.accept(this);
+                    this.currentAdapter.arrayStore(getType(symbol.type.replace("[]", "")));
                 } else {
                     this.currentAdapter.loadLocal(this.offset(symbol));
                     aThis.arraySelector.accept(this);
@@ -293,7 +297,7 @@ public class ByteCodeGenerator {
                     break;
                 case "char[]":
                     this.currentAdapter.newLocal(Type.getType(char[].class));
-                    this.currentAdapter.newArray(Type.FLOAT_TYPE);
+                    this.currentAdapter.newArray(Type.CHAR_TYPE);
                     this.currentAdapter.storeLocal(this.offset(symbol));
                     break;
                 default:
@@ -568,8 +572,11 @@ public class ByteCodeGenerator {
         });
         cw.visitEnd();
         try {
+            String fileformation=wholeFile.getParent()==null?"":wholeFile.getParent()+"/";
+            System.out.println(fileformation);
             try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(
-                    wholeFile.getParent()+"/"+className + ".class"))) {
+                    fileformation+className+".class"))) {
+                
                 bos.write(cw.toByteArray());
                 bos.flush();
             }
